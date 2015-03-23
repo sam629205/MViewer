@@ -377,25 +377,26 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 			((MainActivity)context).loadMore(false);
 		}
 		int i = -1;
-		int yoff = 68;
+		int yoff = 87;
+		int xoff = 152;
 		switch (paramView.getId()) {
 		case R.id.iv1:
 			i = 0;
 			// 此处设置不同大小的item的长�?,下面同理省去，同样大小，就未设置,直接初始
 			// width = DensityUtil.dip2px(context, 247);// 放大前的�?
 			// height = DensityUtil.dip2px(context, 357);// 放大前的�?
-			x = DensityUtil.dip2px(context, 94);
+			x = DensityUtil.dip2px(context, xoff);
 			y = DensityUtil.dip2px(context, yoff);
 			// 此处可封装出数学算法，计算偏移量的x,y值�?我懒得算了，直接设置�?
 			break;
 		case R.id.iv2:
 			i = 1;
-			x = DensityUtil.dip2px(context, 435);
+			x = DensityUtil.dip2px(context, xoff+335);
 			y = DensityUtil.dip2px(context, yoff);
 			break;
 		case R.id.iv3:
 			i = 2;
-			x = DensityUtil.dip2px(context, 765);
+			x = DensityUtil.dip2px(context, xoff+671);
 			y = DensityUtil.dip2px(context, yoff);
 			break;
 		}

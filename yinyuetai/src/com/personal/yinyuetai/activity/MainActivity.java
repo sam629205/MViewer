@@ -41,11 +41,11 @@ public class MainActivity extends FragmentActivity {
 	private EditText ett_mvSearch;
 	private Button btn_confirm,btn_ok,btn_cancel;
 	private InputMethodManager imm;
-	String[] array1 = {"all","ML","US","KR","HT","JP"};
-	String[] array2 = {"all","Boy","Girl","Combo"};
+	String[] array1 = {"","ML","US","KR","HT","JP"};
+	String[] array2 = {"","Boy","Girl","Combo"};
 	String[] array3 = {"pubdate","dayViews","weekViews","monthViews"};
-	String[] array4 = {"all","FirstShow","music_video","live","concert"};
-	String[] array5 = {"high","super",""};
+	String[] array4 = {"","FirstShow","music_video","live","concert"};
+	String[] array5 = {"super","high",""};
 	int item1=0,item2=0,item3=0,item4=0,item5=0,item6=0,item7=0;
     private Spinner spn_artist_area,spn_artist_sort,spn_video_sort,spn_sort_way,spn_page,spn_artist_area2,spn_artist_sort2;
 	StringBuilder str = new StringBuilder();
