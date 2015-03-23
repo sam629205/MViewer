@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="umeng_example_home_btn_analytics">Analytics</string>
+    <string name="umeng_example_home_btn_xp">XP</string>
+    <string name="umeng_example_home_btn_ad">Ads</string>
+    <string name="umeng_example_home_btn_tools">Tools</string>
+    <string name="umeng_example_home_btn_fb">Feedback</string>
+    <string name="umeng_example_home_btn_update">Update</string>
+    <string name="umeng_example_home_btn_plus">Socialize</string>
+    <string name="umeng_example_home_btn_xp_ufp">Umeng For Publisher</string>
+    <string name="umeng_example_xp_home_btn_container">Container</string>
+    <string name="umeng_example_xp_home_btn_banner">Banner</string>
+    <string name="umeng_example_xp_home_btn_banner_ufp">"Banner\n(UFP)"</string>
+    <string name="umeng_example_xp_home_btn_handler">Handler</string>
+    <string name="umeng_example_xp_home_btn_handler_ufp">"Handler\n(UFP)"</string>
+    <string name="umeng_example_xp_home_btn_tab">Multi-Pages</string>
+    <string name="umeng_example_xp_home_btn_wap">WebView</string>
+    <string name="umeng_example_xp_home_btn_custom">Custom</string>
+    <string name="umeng_example_xp_home_btn_wap_ufp">"WebView\n(UFP)"</string>
+    <string name="umeng_example_xp_home_btn_push_header">Push AD\n(UFP)</string>
+    <string name="umeng_example_xp_home_btn_textlink">Text Link</string>
+    <string name="umeng_example_xp_home_btn_container_header">LargeImage</string>
+    <string name="umeng_example_xp_home_handler_icons">Icons \n(UFP)</string>
+    <string name="umeng_example_fb_home_btn_simple">Simple Demo</string>
+    <string name="actionbar_activity_not_found">Failed to open intent&#8230;</string>
+    <string name="umeng_example_home_hint_wait">Coming soooooon</string>
+    <string name="intro"> The webview before show js call Umeng Analytics APIs</string>
+	<string name="app_name">看音悦台</string>
+    <string name="title_section3">Section 3</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_mv">MV</string>
+    <string name="title_artist">歌手</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">筛选</string>
+    <string name="title_activity_main">音悦台</string>
+    <string name="artist_area">艺人地区</string>
+    <string name="video_sort">视频分类</string>
+    <string name="artist_sort">艺人分类</string>
+    <string name="sort_way">排序方式</string>
+</resources>

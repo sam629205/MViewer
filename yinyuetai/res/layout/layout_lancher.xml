@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <!-- 倒影 -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="265.0dip" >
+
+        <ImageView
+            android:id="@+id/set_refimg_1"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/set_refimg_2"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="290dp" />
+
+        <ImageView
+            android:id="@+id/set_refimg_3"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="620dp" />
+    </RelativeLayout>
+
+    <!--  -->
+
+    <RelativeLayout
+        android:id="@+id/settings_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <FrameLayout
+            android:id="@+id/layout1"
+            android:layout_width="508dip"
+            android:layout_height="310dip"
+            android:visibility="visible" >
+
+            <ImageView
+                android:id="@+id/app_shadow"
+                android:layout_width="600dip"
+                android:layout_height="290dip"
+                android:scaleType="fitXY"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:src="@drawable/shadow_big_left"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv1"
+                style="@style/main_iv"
+                android:layout_width="320dp"
+                android:layout_height="200dp"
+                android:layout_marginLeft="104dp"
+                android:layout_marginTop="27dp"
+                android:background="@drawable/green_no_shadow"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                 />
+            <com.personal.yinyuetai.view.AutoScrollTextView
+                android:id="@+id/tv1"
+                android:layout_marginLeft="10dp"
+               	style="@style/tv"
+               />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/layout2"
+            android:layout_width="562dip"
+            android:layout_height="310dip"
+            android:layout_marginLeft="285dp"
+            android:visibility="visible" >
+
+            <ImageView
+                android:id="@+id/game_shadow"
+                android:layout_width="630dip"
+                android:layout_height="290dip"
+                android:scaleType="fitXY"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:src="@drawable/shadow_big_center"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv2"
+                style="@style/main_iv"
+                android:layout_width="320dp"
+                android:layout_height="200dp"
+                android:layout_marginLeft="158dp"
+                android:layout_marginTop="27dp"
+                android:background="@drawable/orange_no_shadow"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                 />
+            <com.personal.yinyuetai.view.AutoScrollTextView
+                android:id="@+id/tv2"
+               	style="@style/tv"
+               	android:layout_marginLeft="40dp"
+               />
+            
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/layout3"
+            android:layout_width="562dip"
+            android:layout_height="310dip"
+            android:layout_marginLeft="620dp"
+            android:visibility="visible" >
+
+            <ImageView
+                android:id="@+id/setting_shadow"
+                android:layout_width="600dip"
+                android:layout_height="290dip"
+                android:scaleType="fitXY"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:src="@drawable/shadow_big_right"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv3"
+                style="@style/main_iv"
+                android:layout_width="320dp"
+                android:layout_height="200dp"
+                android:layout_marginLeft="158dp"
+                android:layout_marginTop="27dp"
+                android:background="@drawable/blue_no_shadow"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                 />
+            <com.personal.yinyuetai.view.AutoScrollTextView 
+                android:id="@+id/tv3"
+                android:layout_marginLeft="40dp"
+               	style="@style/tv"
+               />
+        </FrameLayout>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/white_boder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:background="@drawable/white_border"
+        android:visibility="invisible" />
+
+</FrameLayout>

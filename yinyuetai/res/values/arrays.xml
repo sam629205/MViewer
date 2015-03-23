@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="artist_area">
+    <item>不限</item>
+    <item>内地</item>
+    <item>欧美</item>
+    <item>韩语</item>
+    <item>港台</item>
+    <item>日语</item>
+</string-array>
+ <string-array name="artist_sort">
+     <item>不限</item>
+    <item>男艺人</item>
+    <item>女艺人</item>
+    <item>乐队组合</item>
+</string-array>  
+ <string-array name="video_sort">
+     <item>不限</item>
+     <item>首播</item>
+    <item>官方版</item>
+    <item>现场</item>
+    <item>演唱会</item>
+</string-array> 
+ <string-array name="sort_way">
+    <item>最新上传</item>
+    <item>本日最多</item>
+    <item>本周最多</item>
+    <item>本月最多</item>
+</string-array>  
+ <string-array name="definition">
+    <item>高清</item>
+    <item>超清</item>
+    <item>标清</item>
+</string-array>  
+</resources>

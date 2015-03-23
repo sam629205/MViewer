@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+    <TextView 
+        android:id="@+id/tv1_menu"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:text="MV"/>
+    <TextView 
+        android:id="@+id/tv2_menu"
+        android:layout_marginLeft="10dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="歌手"/>
+</LinearLayout>
+ <ImageView
+        android:id="@+id/ivCursor"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="matrix"
+        android:src="@drawable/tab_cursor" />
+ <android.support.v4.view.ViewPager
+        android:id="@+id/vpViewPager1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+         >
+    </android.support.v4.view.ViewPager>
+</LinearLayout>
