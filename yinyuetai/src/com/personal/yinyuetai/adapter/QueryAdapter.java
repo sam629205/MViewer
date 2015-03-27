@@ -78,7 +78,6 @@ public class QueryAdapter extends BaseAdapter {
 		LayoutInflater inflate = ((Activity) mContext).getLayoutInflater(); 
 		holder = new viewHolder();
 		convertView = new LancherLayout(mContext,position,infoList);
-		View temp = convertView;
 		convertView.setTag(holder);
 //		final ArtistInfo info = (ArtistInfo)getItem(position*3);
 //		final ArtistInfo info1 = (ArtistInfo)getItem(position*3+1);

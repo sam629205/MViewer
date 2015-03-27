@@ -1,6 +1,8 @@
 package com.personal.yinyuetai.activity;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.personal.service.getRealURL;
@@ -8,8 +10,10 @@ import com.personal.yinyuetai.R;
 import com.personal.yinyuetai.bean.ArtistInfo;
 import com.personal.yinyuetai.view.AlwaysMarqueeTextView;
 import com.personal.yinyuetai.view.MyVideoView;
+import com.personal.yinyuetai.view.NoScrollListView;
 
 import android.app.Activity;
+import android.app.ActionBar.LayoutParams;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
@@ -19,11 +23,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
+import android.webkit.WebView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.MediaController;
+import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -39,6 +53,10 @@ public class VideoPlayActivity extends Activity implements OnCompletionListener{
 	private AudioManager myAudioManager;
 	private String reaLink;
 	private Handler titleHandler;
+	private PopupWindow popupWindow;
+	private Button btn_cancel;
+	private NoScrollListView lv;
+	private WebView wv;
 @Override
 protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
@@ -111,6 +129,9 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
 			vv.start();
 		}
 	}
+	if (keyCode==KeyEvent.KEYCODE_MENU) {
+		showPopupWindow();
+	}
 	if (keyCode==KeyEvent.KEYCODE_DPAD_UP) {
 		myAudioManager.adjustVolume(AudioManager.ADJUST_RAISE, 0);
 		Toast.makeText(VideoPlayActivity.this, "当前音量大小为："+myAudioManager.getStreamVolume(AudioManager.STREAM_SYSTEM), Toast.LENGTH_SHORT).show();
@@ -160,5 +181,45 @@ private void play(int i){
 	};
 	thread.start();
 //	new Thread(getReaLink).start();
+}
+private void showPopupWindow(){
+	if (popupWindow!=null&&popupWindow.isShowing()) {
+		popupWindow.dismiss();
+	}else {
+		View mView = initPopupWindow();
+		popupWindow= new PopupWindow(mView,LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT,true);
+		popupWindow.showAtLocation(mView, Gravity.CENTER, 0, 0);
+	}
+}
+private View initPopupWindow(){
+	LayoutInflater inflater = LayoutInflater.from(VideoPlayActivity.this);
+	View popWindow = inflater.inflate(R.layout.option_artistinfo, null);
+	btn_cancel=(Button) popWindow.findViewById(R.id.btn_cancel);
+	btn_cancel.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			if (popupWindow!=null&&popupWindow.isShowing()) {
+				popupWindow.dismiss();
+			}
+		}
+	});
+	lv = (NoScrollListView) popWindow.findViewById(R.id.lv);
+	wv = (WebView) popWindow.findViewById(R.id.wv_info);
+	String[] artistStr = infoList.get(index).getTitle().split("-");
+	String[] artistStr1 = artistStr[1].split("&"); 
+	final ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(VideoPlayActivity.this, android.R.layout.simple_list_item_1, artistStr1);
+	lv.setAdapter(adapter);
+	lv.setOnItemClickListener(new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+			wv.setVisibility(View.VISIBLE);
+			wv.loadUrl("http://zh.wikipedia.org/zh/"+adapter.getItem(arg2));
+		}
+		
+	});
+	return popWindow;
 }
 }

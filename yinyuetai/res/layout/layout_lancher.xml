@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 
-    <!-- 倒影 -->
+    <!-- 鍊掑奖 -->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -69,12 +69,12 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                  />
-            <com.personal.yinyuetai.view.AutoScrollTextView
+        </FrameLayout>
+        <com.personal.yinyuetai.view.AutoScrollTextView
                 android:id="@+id/tv1"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="104dp"
                	style="@style/tv"
                />
-        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/layout2"
@@ -105,14 +105,12 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                  />
-            <com.personal.yinyuetai.view.AutoScrollTextView
+        </FrameLayout>
+	<com.personal.yinyuetai.view.AutoScrollTextView
                 android:id="@+id/tv2"
                	style="@style/tv"
-               	android:layout_marginLeft="40dp"
+               	android:layout_marginLeft="443dp"
                />
-            
-        </FrameLayout>
-
         <FrameLayout
             android:id="@+id/layout3"
             android:layout_width="562dip"
@@ -142,12 +140,12 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                  />
-            <com.personal.yinyuetai.view.AutoScrollTextView 
+        </FrameLayout>
+        <com.personal.yinyuetai.view.AutoScrollTextView 
                 android:id="@+id/tv3"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="778dp"
                	style="@style/tv"
                />
-        </FrameLayout>
     </RelativeLayout>
 
     <ImageView

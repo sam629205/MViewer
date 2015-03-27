@@ -13,20 +13,26 @@ import java.util.Random;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.personal.yinyuetai.R;
 import com.personal.yinyuetai.activity.MainActivity;
 import com.personal.yinyuetai.activity.VideoPlayActivity;
 import com.personal.yinyuetai.bean.ArtistInfo;
 import com.personal.yinyuetai.util.DensityUtil;
+import com.personal.yinyuetai.util.Preference;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -61,9 +67,11 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 	private int randomTemp = -1;
 	private ImageLoader imageLoader;
 	private	DisplayImageOptions options = null;
+	private ImageLoadingListener imageLoadingListener;
 	private int listCount;
+	ImageView[] arrayOfImageView = new ImageView[3];// 倒影
 	loadMore mListener;
-	
+	int[] loc,loc1,loc2;
 	public LancherLayout(Context paramContext , int listIndex , List<ArtistInfo> infoList) {
 		super(paramContext);
 		this.context = paramContext;
@@ -199,7 +207,7 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		
 		options = new DisplayImageOptions.Builder()
-		.displayer(new RoundedBitmapDisplayer(0xff000000, 10))
+		.displayer(new RoundedBitmapDisplayer(0xff000000, 2))
 		.cacheInMemory()
 		.cacheOnDisc()
 		.build();
@@ -212,7 +220,11 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 		arrayOfInt[4] = R.drawable.pink_no_shadow;
 		arrayOfInt[5] = R.drawable.red_no_shadow;
 		arrayOfInt[6] = R.drawable.yellow_no_shadow;
-
+		
+		arrayOfImageView[0] = ((ImageView) findViewById(R.id.set_refimg_1));
+		arrayOfImageView[1] = ((ImageView) findViewById(R.id.set_refimg_2));
+		arrayOfImageView[2] = ((ImageView) findViewById(R.id.set_refimg_3));
+		
 		int i = arrayOfInt.length;
 		this.frameLayoutViews[0] = ((FrameLayout) findViewById(R.id.layout1));
 		this.frameLayoutViews[1] = ((FrameLayout) findViewById(R.id.layout2));
@@ -236,15 +248,90 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 			tvs[0].setText(infoList.get(3*listIndex).getTitle());
 			tvs[0].init(((Activity)context).getWindowManager());
 			tvs[0].startScroll();
-			imageLoader.displayImage(infoList.get(3*listIndex).getImg(), imageViews[0], options);
+			imageLoader.displayImage(infoList.get(3*listIndex).getImg(), imageViews[0], options,new ImageLoadingListener() {
+				
+				@Override
+				public void onLoadingStarted() {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onLoadingFailed(FailReason failReason) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onLoadingComplete(Bitmap loadedImage) {
+					arrayOfImageView[0].setImageBitmap(ImageReflect.createCutReflectedImage(ImageReflect.convertViewToBitmap(frameLayoutViews[0]), 0));
+					
+				}
+				
+				@Override
+				public void onLoadingCancelled() {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 		}
 		if (3*listIndex+1<infoList.size()) {
 			tvs[1].setText(infoList.get(3*listIndex+1).getTitle());
-			imageLoader.displayImage(infoList.get(3*listIndex+1).getImg(), imageViews[1], options);
+			imageLoader.displayImage(infoList.get(3*listIndex+1).getImg(), imageViews[1], options,new ImageLoadingListener() {
+				
+				@Override
+				public void onLoadingStarted() {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onLoadingFailed(FailReason failReason) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onLoadingComplete(Bitmap loadedImage) {
+					arrayOfImageView[1].setImageBitmap(ImageReflect.createCutReflectedImage(ImageReflect.convertViewToBitmap(frameLayoutViews[1]), 0));
+					
+				}
+				
+				@Override
+				public void onLoadingCancelled() {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 		}
 		if (3*listIndex+2<infoList.size()) {
 			tvs[2].setText(infoList.get(3*listIndex+2).getTitle());
-			imageLoader.displayImage(infoList.get(3*listIndex+2).getImg(), imageViews[2], options);
+			imageLoader.displayImage(infoList.get(3*listIndex+2).getImg(), imageViews[2], options,new ImageLoadingListener() {
+				
+				@Override
+				public void onLoadingStarted() {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onLoadingFailed(FailReason failReason) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onLoadingComplete(Bitmap loadedImage) {
+					arrayOfImageView[2].setImageBitmap(ImageReflect.createCutReflectedImage(ImageReflect.convertViewToBitmap(frameLayoutViews[2]), 0));
+					
+				}
+				
+				@Override
+				public void onLoadingCancelled() {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 		}
 		
 		tvs[1].init(((Activity)context).getWindowManager());
@@ -295,11 +382,6 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 //			}
 //		});
 		
-		ImageView[] arrayOfImageView = new ImageView[3];// 倒影
-		arrayOfImageView[0] = ((ImageView) findViewById(R.id.set_refimg_1));
-		arrayOfImageView[1] = ((ImageView) findViewById(R.id.set_refimg_2));
-		arrayOfImageView[2] = ((ImageView) findViewById(R.id.set_refimg_3));
-
 		this.whiteBorder = ((ImageView) findViewById(R.id.white_boder));
 
 		FrameLayout.LayoutParams layoutparams = new FrameLayout.LayoutParams(340, 120);
@@ -309,11 +391,11 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 
 		for (int j = 0; j < 3; j++) {
 			this.shadowBackgrounds[j].setVisibility(View.GONE);
-			// 随机产生背景�?
+			// 随机产生背景
 			imageViews[j].setBackgroundResource(arrayOfInt[createRandom(i)]);
 			imageViews[j].setOnFocusChangeListener(this);
 			imageViews[j].setOnClickListener(this);
-			arrayOfImageView[j].setImageBitmap(ImageReflect.createCutReflectedImage(ImageReflect.convertViewToBitmap(frameLayoutViews[j]), 0));
+			
 		}
 	}
 
@@ -377,27 +459,49 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 			((MainActivity)context).loadMore(false);
 		}
 		int i = -1;
-		int yoff = 87;
+		int yoff = 65;
 		int xoff = 152;
+		loc = new int[2];
+		loc1 = new int[2];
+		loc2 = new int[2];
+		if (listIndex==0) {
+			imageViews[0].getLocationInWindow(loc);
+			imageViews[1].getLocationInWindow(loc1);
+			imageViews[2].getLocationInWindow(loc2);
+			Preference.putInt("borderX", loc[0]);
+			Preference.putInt("borderX1", loc1[0]);
+			Preference.putInt("borderX2", loc2[0]);
+		}else {
+			loc[0] = Preference.getInt("borderX");
+			loc1[0] = Preference.getInt("borderX1");
+			loc2[0] = Preference.getInt("borderX2");
+		}
+		int offset = (whiteBorder.getWidth()-imageViews[0].getWidth())/2;
 		switch (paramView.getId()) {
 		case R.id.iv1:
 			i = 0;
 			// 此处设置不同大小的item的长�?,下面同理省去，同样大小，就未设置,直接初始
 			// width = DensityUtil.dip2px(context, 247);// 放大前的�?
 			// height = DensityUtil.dip2px(context, 357);// 放大前的�?
-			x = DensityUtil.dip2px(context, xoff);
-			y = DensityUtil.dip2px(context, yoff);
+//			x = DensityUtil.dip2px(context, xoff);
+//			y = DensityUtil.dip2px(context, yoff);
+			x = loc[0]-offset;
+			y = yoff;
 			// 此处可封装出数学算法，计算偏移量的x,y值�?我懒得算了，直接设置�?
 			break;
 		case R.id.iv2:
 			i = 1;
-			x = DensityUtil.dip2px(context, xoff+335);
-			y = DensityUtil.dip2px(context, yoff);
+//			x = DensityUtil.dip2px(context, xoff+335);
+//			y = DensityUtil.dip2px(context, yoff);
+			x = loc1[0]-offset;
+			y = yoff;
 			break;
 		case R.id.iv3:
 			i = 2;
-			x = DensityUtil.dip2px(context, xoff+671);
-			y = DensityUtil.dip2px(context, yoff);
+//			x = DensityUtil.dip2px(context, xoff+671);
+//			y = DensityUtil.dip2px(context, yoff);
+			x = loc2[0]-offset;
+			y = yoff;
 			break;
 		}
 		if (paramBoolean) {
@@ -410,7 +514,7 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 			this.whiteBorder.setVisibility(View.INVISIBLE);
 		}
 	}
-
+	
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {

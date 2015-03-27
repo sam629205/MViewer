@@ -1,5 +1,7 @@
 package com.personal.yinyuetai.view;
 
+import com.personal.yinyuetai.util.DensityUtil;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
@@ -13,7 +15,7 @@ import android.view.View;
 /**
  * 倒影生成
  * 
- * @author 李小�?364643658@qq.com
+ * @author Adolf
  * */
 public class ImageReflect {
 	private static int reflectImageHeight = 100;
@@ -26,8 +28,13 @@ public class ImageReflect {
 	}
 
 	public static Bitmap createCutReflectedImage(Bitmap paramBitmap, int paramInt) {
-		int i = paramBitmap.getWidth();
-		int j = paramBitmap.getHeight();
+		int i = 0;
+		int j = 0;
+		if (paramBitmap!=null) {
+			 i = paramBitmap.getWidth();
+			 j = paramBitmap.getHeight();
+		}
+		
 		Bitmap localBitmap2 = null;
 		if (j <= paramInt + reflectImageHeight) {
 			localBitmap2 = null;
