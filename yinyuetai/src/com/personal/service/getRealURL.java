@@ -14,6 +14,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.personal.yinyuetai.bean.ArtistInfo;
+import com.personal.yinyuetai.bean.YueListInfo;
 
 public class getRealURL {
 public List<ArtistInfo> parseWeb(String URL,int status) {
@@ -126,6 +127,17 @@ public List<ArtistInfo> parseWeb(String URL,int status) {
 				l++;
 			}
 			break;
+		case 3://悦单视频列表
+			Elements elements8 = doc.getElementsByClass("mv_pic");
+			for (Element ele : elements8) {
+				titleList[i] = ele.select("a").attr("title");
+				imgList[i] = ele.select("img").attr("src");
+				String[] temp = imgList[i].split("/");
+				String link = "http://v.yinyuetai.com/video/"+temp[6];
+				videoList[i] = link;
+				i++;
+			}
+			break;
 		default:
 			break;
 		}
@@ -148,6 +160,48 @@ public List<ArtistInfo> parseWeb(String URL,int status) {
 	//Document doc = Jsoup.connect(URL).get();
 	return resultList;
 
+}
+public List<YueListInfo> parseYueList(String URL,int status){
+	Document doc=null;
+	List<YueListInfo> resultList = new ArrayList<YueListInfo>();
+	try {
+		final String DESKTOP_USERAGENT = "Mozilla/5.0 (Macintosh; " +  
+		"U; Intel Mac OS X 10_6_3; en-us) AppleWebKit/533.16 (KHTML, " +  
+		"like Gecko) Version/5.0 Safari/533.16";  
+		doc = Jsoup.connect(URL).timeout(20000).userAgent(DESKTOP_USERAGENT).get();
+		String[] videoList = new String[20];
+		String[] titleList = new String[20];
+		String[] titleList2 = new String[20];
+		String[] titleList3 = new String[20];
+		String[] imgList = new String[20];
+		String[] banner = new String[2];
+		int i=0,j=0,k=0,l=0;
+		switch (status) {
+		case 0://悦单列表
+			Elements elements = doc.getElementsByClass("thumb_box");
+			for (Element ele : elements) {
+				Elements mElements = ele.getElementsByTag("a");
+				String title = mElements.get(0).attr("title");
+				String link = mElements.get(0).attr("href");
+				String imgUrl = mElements.get(0).select("img").attr("src");
+				YueListInfo info = new YueListInfo();
+				info.setTitle(title);
+				info.setImgUrl(imgUrl);
+				info.setLink(link);
+				resultList.add(info);
+			}
+			break;
+		default:
+			break;
+		}
+	} catch (MalformedURLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}  
+	//Document doc = Jsoup.connect(URL).get();
+	return resultList;
 }
 public String parseLink(String URL) {
 	Document doc=null;

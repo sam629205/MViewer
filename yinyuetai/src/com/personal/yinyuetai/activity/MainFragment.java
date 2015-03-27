@@ -38,13 +38,9 @@ public class MainFragment extends Fragment {
 	private ImageLoader imageLoader = null;
 	private	DisplayImageOptions options = null;
 	private int mStatus=0;
-	private static SharedPreferences appPreferences = null;
-    private ImageView iv11,iv12,iv13,iv21,iv22,iv23,iv31,iv32,iv33,iv41,iv42,iv43,iv51,iv52,iv53,iv61,iv62,iv63,iv71,iv72;
-    private FrameLayout fl11,fl12,fl13,fl21,fl22,fl23,fl31,fl32,fl33,fl41,fl42,fl43,fl51,fl52,fl53,fl61,fl62,fl63,fl71,fl72;
     private FrameLayout[] flList= new FrameLayout[20];
     private ImageView[] ivList=new ImageView[20];
     private TextView[] tvList=new TextView[20];
-    private TextView tv11,tv12,tv13,tv21,tv22,tv23,tv31,tv32,tv33,tv41,tv42,tv43,tv51,tv52,tv53,tv61,tv62,tv63,tv71,tv72;
     private String mDefiniton;
     private String urlStr;
     private StringBuilder mUrlStr;
@@ -53,7 +49,7 @@ public class MainFragment extends Fragment {
     private PullToRefreshListView ptrl;
 	private ProgressDialog waitBar=null;
 	private QueryAdapter adapter;
-	
+	private String yuelistLink;
 	public MainFragment(){
 		
 	}
@@ -76,7 +72,7 @@ public class MainFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		view=inflater.inflate(R.layout.fragment_main, container,false);
-		appPreferences=getActivity().getSharedPreferences("Definition", 0);
+//		appPreferences=getActivity().getSharedPreferences("Definition", 0);
 		createView();
 		initView();
 		new GetDataTask().execute("");
@@ -114,6 +110,9 @@ public class MainFragment extends Fragment {
 			if (mStatus==3) {
 			infoList=get.parseWeb(url.toString(), 2);
 			}
+			if (mStatus==4) {
+			infoList=get.parseWeb(yuelistLink, 3);
+			}
 	        return infoList;
 			
 		}
@@ -131,7 +130,7 @@ public class MainFragment extends Fragment {
 				adapter = new QueryAdapter(getActivity(),resultList);
 				SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(adapter);
 				swingBottomInAnimationAdapter.setAbsListView(ptrl.getRefreshableView());
-				ptrl.setAdapter(adapter);
+				ptrl.setAdapter(swingBottomInAnimationAdapter);
 			}else {
 				adapter.addData(resultList);
 			}
@@ -142,6 +141,12 @@ public class MainFragment extends Fragment {
 		}
 	}
 }
+	public void loadYueList(String link){
+		this.yuelistLink = link;
+		mStatus=4;
+		new GetDataTask().execute("");
+	}
+	
 	private class MyRefreshListener implements OnRefreshListener2<ListView>{
 
 		private PullToRefreshListView mPtflv;

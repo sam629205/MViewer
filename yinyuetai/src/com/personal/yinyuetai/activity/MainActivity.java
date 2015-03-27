@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -36,10 +38,11 @@ public class MainActivity extends FragmentActivity {
 	private boolean isExit = false; // ����Ƿ�Ҫ�˳�
 	private TimerTask timeTask = null;
 	private Timer timer = null;
-	private MainFragment mContent;
+	private MainFragment mainFragment;
+	private YueListFragment yuelistFragment;
 	private PopupWindow popupWindow;
 	private EditText ett_mvSearch;
-	private Button btn_confirm,btn_ok,btn_cancel;
+	private Button btn_confirm,btn_ok,btn_cancel,btnYuelist;
 	private InputMethodManager imm;
 	String[] array1 = {"","ML","US","KR","HT","JP"};
 	String[] array2 = {"","Boy","Girl","Combo"};
@@ -53,7 +56,11 @@ public class MainActivity extends FragmentActivity {
     Handler handler= new Handler();
     Handler handler2 = new Handler();
 	private static SharedPreferences appPreferences = null;
+	public  int selectIndex;
 	private boolean lastline;
+	private boolean lastline1;
+	private FragmentTransaction fragmentTransaction;
+	private FragmentManager fragmentManager;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,21 +91,29 @@ public class MainActivity extends FragmentActivity {
 		//友盟更新
 		UmengUpdateAgent.setDefault();
 		UmengUpdateAgent.forceUpdate(MainActivity.this);
+		fragmentManager = getSupportFragmentManager();
+		fragmentTransaction = fragmentManager.beginTransaction();
 		// ����������Fragment��ͼ����
 		if (savedInstanceState != null){
-			mContent = (MainFragment) getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
+			mainFragment = (MainFragment) getSupportFragmentManager().getFragment(savedInstanceState, "mainFragment");
 		}
-		if (mContent == null){
+		mainFragment = (MainFragment) fragmentManager.findFragmentByTag("mf");
+		yuelistFragment = (YueListFragment) fragmentManager.findFragmentByTag("yf");
+		if (mainFragment == null){
 			str.append("http://mv.yinyuetai.com/all?sort=weekViews");
-			mContent = new MainFragment(0, str);
+			mainFragment = new MainFragment(0, str);
+			fragmentTransaction.add(R.id.content_fl,mainFragment, "mf").commit();
 		}
-		getSupportFragmentManager().beginTransaction().replace(R.id.content_fl, mContent).commit();
 
 	
 	}
 	
 	public void loadMore(boolean lastline){
 		this.lastline = lastline;
+	}
+	
+	public void loadMore1(boolean lastline){
+		this.lastline1 = lastline;
 	}
 	
     @Override
@@ -113,7 +128,10 @@ public class MainActivity extends FragmentActivity {
 		}
     	if (keyCode==KeyEvent.KEYCODE_DPAD_DOWN) {
 			if (lastline) {
-				mContent.loadMore();
+				mainFragment.loadMore();
+			}
+			if (lastline1) {
+				yuelistFragment.loadMore();
 			}
 		}
     	return super.onKeyDown(keyCode, event);
@@ -127,6 +145,7 @@ public class MainActivity extends FragmentActivity {
 			popupWindow.showAtLocation(mView, Gravity.CENTER, 0, 0);
 		}
     }
+
     private View initPopupWindow(){
     	LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
     	View popWindow = inflater.inflate(R.layout.option_menu, null);
@@ -134,6 +153,22 @@ public class MainActivity extends FragmentActivity {
     	btn_confirm=(Button) popWindow.findViewById(R.id.btn_confirm);
     	btn_ok=(Button) popWindow.findViewById(R.id.btn_ok);
     	btn_cancel=(Button) popWindow.findViewById(R.id.btn_cancel);
+    	btnYuelist = (Button) popWindow.findViewById(R.id.btnYuelist);
+    	btnYuelist.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				FragmentTransaction ft = fragmentManager.beginTransaction();
+				if (yuelistFragment==null) {
+					yuelistFragment = new YueListFragment();
+//					fragmentTransaction.replace(R.id.content_fl, yuelistFragment, "yf");
+					ft.replace(R.id.content_fl,yuelistFragment, "yf").commit();
+				}else {
+					ft.attach(yuelistFragment);
+				}
+				popupWindow.dismiss();
+			}
+		});
     	btn_cancel.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -155,7 +190,7 @@ public class MainActivity extends FragmentActivity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				mContent.changeContent(3, str);
+				mainFragment.changeContent(3, str);
 //				MainFragment mf = new MainFragment(3, str);
 //				getSupportFragmentManager().beginTransaction().replace(R.id.content_fl, mf).commit();
 				popupWindow.dismiss();
@@ -272,7 +307,7 @@ public class MainActivity extends FragmentActivity {
     			}
     			str.append("&sort=");
     			str.append(array3[item3]);
-    			mContent.changeContent(1, str);
+    			mainFragment.changeContent(1, str);
 //    			MainFragment mf = new MainFragment(1, str);
 //    			getSupportFragmentManager().beginTransaction().replace(R.id.content_fl, mf).commit();
     			popupWindow.dismiss();
@@ -280,6 +315,12 @@ public class MainActivity extends FragmentActivity {
 
     	});
 		return popWindow;
+    }
+    public void loadYueList(String link){
+    	if (mainFragment!=null) {
+			fragmentTransaction.attach(mainFragment);
+			mainFragment.loadYueList(link);
+		}
     }
 	/**
 	 * �������뷨����
