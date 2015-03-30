@@ -1,20 +1,10 @@
 package com.personal.yinyuetai.activity;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.personal.service.getRealURL;
-import com.personal.yinyuetai.R;
-import com.personal.yinyuetai.bean.ArtistInfo;
-import com.personal.yinyuetai.view.AlwaysMarqueeTextView;
-import com.personal.yinyuetai.view.MyVideoView;
-import com.personal.yinyuetai.view.NoScrollListView;
-
-import android.app.Activity;
 import android.app.ActionBar.LayoutParams;
-import android.content.Intent;
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -28,18 +18,21 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.MediaController;
 import android.widget.PopupWindow;
-import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.VideoView;
+
+import com.personal.service.getRealURL;
+import com.personal.yinyuetai.R;
+import com.personal.yinyuetai.bean.ArtistInfo;
+import com.personal.yinyuetai.view.AlwaysMarqueeTextView;
+import com.personal.yinyuetai.view.MyVideoView;
+import com.personal.yinyuetai.view.NoScrollListView;
 
 public class VideoPlayActivity extends Activity implements OnCompletionListener{
 	private MyVideoView vv;
