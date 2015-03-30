@@ -9,6 +9,7 @@ import java.util.TimerTask;
 
 import android.app.ActionBar.LayoutParams;
 import android.app.Service;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -315,12 +316,6 @@ public class MainActivity extends FragmentActivity {
 
     	});
 		return popWindow;
-    }
-    public void loadYueList(String link){
-    	if (mainFragment!=null) {
-			fragmentTransaction.attach(mainFragment);
-			mainFragment.loadYueList(link);
-		}
     }
 	/**
 	 * �������뷨����

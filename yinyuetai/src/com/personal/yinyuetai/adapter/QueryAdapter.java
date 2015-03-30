@@ -75,10 +75,15 @@ public class QueryAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		viewHolder holder;
-		LayoutInflater inflate = ((Activity) mContext).getLayoutInflater(); 
-		holder = new viewHolder();
-		convertView = new LancherLayout(mContext,position,infoList);
-		convertView.setTag(holder);
+//		if (convertView==null) {
+			LayoutInflater inflate = ((Activity) mContext).getLayoutInflater(); 
+			holder = new viewHolder();
+			convertView = new LancherLayout(mContext,position,infoList);
+			convertView.setTag(holder);
+//		}else {
+//			holder = (viewHolder) convertView.getTag();
+//		}
+		
 //		final ArtistInfo info = (ArtistInfo)getItem(position*3);
 //		final ArtistInfo info1 = (ArtistInfo)getItem(position*3+1);
 //		final ArtistInfo info2 = (ArtistInfo)getItem(position*3+2);

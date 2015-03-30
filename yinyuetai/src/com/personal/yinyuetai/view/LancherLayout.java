@@ -165,7 +165,7 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 			public void onAnimationEnd(Animation animation) {
 				// TODO Auto-generated method stub
 				shadowBackgrounds[paramInt].startAnimation(animEffect.alphaAnimation(0.0F, 1.0F, 150L, 0L));
-				shadowBackgrounds[paramInt].setVisibility(View.VISIBLE);
+				shadowBackgrounds[paramInt].setVisibility(View.GONE);
 			}
 
 			@Override
@@ -453,10 +453,12 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 		if (onFocusChangeListener != null) {
 			onFocusChangeListener.onFocusChange(paramView, paramBoolean);
 		}
-		if (listIndex==listCount-1) {
-			((MainActivity)context).loadMore(true);
-		}else {
-			((MainActivity)context).loadMore(false);
+		if (context.getClass().equals(MainActivity.class)) {
+			if (listIndex==listCount-1) {
+				((MainActivity)context).loadMore(true);
+			}else {
+				((MainActivity)context).loadMore(false);
+			}
 		}
 		int i = -1;
 		int yoff = 65;

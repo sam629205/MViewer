@@ -128,12 +128,26 @@ public List<ArtistInfo> parseWeb(String URL,int status) {
 			}
 			break;
 		case 3://悦单视频列表
-			Elements elements8 = doc.getElementsByClass("mv_pic");
+			Element content = doc.getElementById("mv_picker");
+			Elements elements8 = content.getElementsByClass("mv2_1x2");
+			titleList = new String[elements8.size()];
+			titleList2 = new String[elements8.size()];
+			titleList3 = new String[elements8.size()];
+			imgList = new String[elements8.size()];
+			videoList = new String[elements8.size()];
 			for (Element ele : elements8) {
 				titleList[i] = ele.select("a").attr("title");
+				Elements actorEles = ele.getElementsByClass("c_cf9");
+				titleList2[i] = actorEles.get(0).text();
 				imgList[i] = ele.select("img").attr("src");
-				String[] temp = imgList[i].split("/");
-				String link = "http://v.yinyuetai.com/video/"+temp[6];
+				Elements linkEles = ele.getElementsByTag("div");
+				String link = null;
+				if (linkEles.get(0).attr("data-id").equals("")) {
+					String[] tempArray = imgList[i].split("/");
+					link = "http://v.yinyuetai.com/video/"+tempArray[5];
+				}else {
+					link = "http://v.yinyuetai.com/video/"+linkEles.get(0).attr("data-id");
+				}
 				videoList[i] = link;
 				i++;
 			}

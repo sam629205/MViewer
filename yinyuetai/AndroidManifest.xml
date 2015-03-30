@@ -43,7 +43,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.VideoPlayActivity" android:screenOrientation="landscape" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        
+        <activity android:name=".activity.YueListLoadActivity" android:screenOrientation="landscape" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <!-- umeng APP Key -->
         <meta-data
             android:name="UMENG_APPKEY"

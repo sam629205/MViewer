@@ -10,6 +10,7 @@ import com.personal.yinyuetai.adapter.YueListAdapter;
 import com.personal.yinyuetai.bean.YueListInfo;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -61,16 +62,16 @@ public class YueListFragment extends Fragment{
 			public void onCheckedChanged(RadioGroup arg0, int arg1) {
 				switch (arg1) {
 				case R.id.rb1:
-					urlStr = "http://pl.yinyuetai.com/playlist_hotView/today";
+					urlStr = "http://pl.yinyuetai.com/playlist_hotView/today?page=";
 					break;
 				case R.id.rb2:
-					urlStr = "http://pl.yinyuetai.com/playlist_promo";
+					urlStr = "http://pl.yinyuetai.com/playlist_promo?page=";
 					break;
 				case R.id.rb3:
-					urlStr = "http://pl.yinyuetai.com/playlist_hotView/all";
+					urlStr = "http://pl.yinyuetai.com/playlist_hotView/all?page=";
 					break;
 				case R.id.rb4:
-					urlStr = "http://pl.yinyuetai.com/playlist_all";
+					urlStr = "http://pl.yinyuetai.com/playlist_all?page=";
 					break;
 				default:
 					break;
@@ -96,7 +97,8 @@ public class YueListFragment extends Fragment{
 		@Override
 		protected List<YueListInfo> doInBackground(Void... arg0) {
 			getRealURL get = new getRealURL();
-			List<YueListInfo> result = get.parseYueList(urlStr, 0);
+			String url = urlStr+page;
+			List<YueListInfo> result = get.parseYueList(url, 0);
 			return result;
 		}
 		@Override
@@ -117,7 +119,8 @@ public class YueListFragment extends Fragment{
 						public void onItemSelected(AdapterView<?> arg0,
 								View arg1, int arg2, long arg3) {
 							MainActivity ma = (MainActivity) getActivity();
-							if (arg2>(page*20-2)) {
+							int temp = (page-1)*20-3;
+							if (arg2>(temp)) {
 								ma.loadMore1(true);
 							}else {
 								ma.loadMore1(false);
@@ -135,8 +138,10 @@ public class YueListFragment extends Fragment{
 						@Override
 						public void onItemClick(AdapterView<?> arg0, View arg1,
 								int arg2, long arg3) {
-							MainActivity ma = (MainActivity) getActivity();
-							ma.loadYueList(result.get(arg2).getLink());
+							Intent intent = new Intent();
+							intent.setClass(getActivity(), YueListLoadActivity.class);
+							intent.putExtra(YueListLoadActivity.URL, result.get(arg2).getLink());
+							startActivity(intent);
 						}
 					});
 				}else {

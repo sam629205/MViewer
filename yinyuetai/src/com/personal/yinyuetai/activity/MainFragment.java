@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.http.conn.scheme.LayeredSocketFactory;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -47,9 +48,8 @@ public class MainFragment extends Fragment {
     private int pageNum=1;
     private TextView tv_next;
     private PullToRefreshListView ptrl;
-	private ProgressDialog waitBar=null;
+	private ProgressDialog waitBar;
 	private QueryAdapter adapter;
-	private String yuelistLink;
 	public MainFragment(){
 		
 	}
@@ -90,28 +90,36 @@ public class MainFragment extends Fragment {
 	public class GetDataTask extends AsyncTask<String, Void, List<ArtistInfo>> {
 		@Override
 		protected void onPreExecute() {
-			waitBar = ProgressDialog.show(getActivity(), "",
-			"正在拼命解析中，请稍候");
-			waitBar.setCancelable(true);
+			if (getActivity()!=null) {
+				waitBar = ProgressDialog.show(getActivity(), "",
+						"正在拼命解析中，请稍候");
+						waitBar.setCancelable(true);
+			}
 		};
 		@Override
 		protected List<ArtistInfo> doInBackground(String... params) {
 			getRealURL get = new getRealURL();
-			String url = urlStr+"&page="+pageNum;
+			String url;
 			if (mStatus==0) {
+			url = urlStr+"&page="+pageNum;
 	        infoList=get.parseWeb(url,0);
 			}
 			if (mStatus==1) {
+				url = urlStr+"&page="+pageNum;
 			infoList=get.parseWeb(url, 0);
 			}
 			if (mStatus==2) {
+				url = urlStr+"&page="+pageNum;
 			infoList=get.parseWeb(url.toString(), 1);
 				}
 			if (mStatus==3) {
+				url = urlStr+"&page="+pageNum;
 			infoList=get.parseWeb(url.toString(), 2);
 			}
 			if (mStatus==4) {
-			infoList=get.parseWeb(yuelistLink, 3);
+			pageNum=1;
+			url = urlStr;
+			infoList=get.parseWeb(url.toString(), 3);
 			}
 	        return infoList;
 			
@@ -141,8 +149,8 @@ public class MainFragment extends Fragment {
 		}
 	}
 }
-	public void loadYueList(String link){
-		this.yuelistLink = link;
+	public void loadYueList(String link,Context context){
+		urlStr = link;
 		mStatus=4;
 		new GetDataTask().execute("");
 	}
