@@ -224,7 +224,7 @@ public String parseLink(String URL) {
 	try {
 		doc = Jsoup.connect(URL).timeout(20000).get();
 		Elements root = doc.getElementsByTag("a");
-		reaLink = root.get(5).attr("href");
+		reaLink = root.get(6).attr("href");
 	} catch (MalformedURLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
