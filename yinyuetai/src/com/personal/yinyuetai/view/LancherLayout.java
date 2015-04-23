@@ -461,12 +461,12 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 			}
 		}
 		int i = -1;
-		int yoff = 130;
-		int xoff = 152;
+		int activityHeight = ((Activity)context).getWindowManager().getDefaultDisplay().getHeight();
+		double rate = 1080/(double)activityHeight;
+		int yoff = (int) (130/rate);
 		loc = new int[2];
 		loc1 = new int[2];
 		loc2 = new int[2];
-
 		if (listIndex==0) {
 			imageViews[0].getLocationInWindow(loc);
 			imageViews[1].getLocationInWindow(loc1);
