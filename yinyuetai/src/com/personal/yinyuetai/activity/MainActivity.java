@@ -17,16 +17,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.method.KeyListener;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -62,6 +65,10 @@ public class MainActivity extends FragmentActivity {
 	private boolean lastline1;
 	private FragmentTransaction fragmentTransaction;
 	private FragmentManager fragmentManager;
+	/**
+	 * 是否是点击menu键打开popupWindow的，默认为false
+	 */
+	boolean isMenuShow = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,12 +127,8 @@ public class MainActivity extends FragmentActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
     	if (keyCode==KeyEvent.KEYCODE_MENU) {
+    		isMenuShow = true;  
 			showPopupWindow();
-		}
-    	if (keyCode==KeyEvent.KEYCODE_BACK) {
-    		if (popupWindow!=null&&popupWindow.isShowing()) {
-				popupWindow.dismiss();
-			}
 		}
     	if (keyCode==KeyEvent.KEYCODE_DPAD_DOWN) {
 			if (lastline) {
@@ -150,11 +153,27 @@ public class MainActivity extends FragmentActivity {
     private View initPopupWindow(){
     	LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
     	View popWindow = inflater.inflate(R.layout.option_menu, null);
+    	LinearLayout content = (LinearLayout) popWindow.findViewById(R.id.parent);
     	ett_mvSearch=(EditText) popWindow.findViewById(R.id.ett_search);
     	btn_confirm=(Button) popWindow.findViewById(R.id.btn_confirm);
     	btn_ok=(Button) popWindow.findViewById(R.id.btn_ok);
     	btn_cancel=(Button) popWindow.findViewById(R.id.btn_cancel);
     	btnYuelist = (Button) popWindow.findViewById(R.id.btnYuelist);
+    	OnKeyListener popListener = new OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
+				 if (arg1 == KeyEvent.KEYCODE_MENU||arg1 == KeyEvent.KEYCODE_BACK) {  
+	                    if (!isMenuShow) {  
+	                        popupWindow.dismiss();  
+	                    }  
+	                    isMenuShow = false;  
+	  
+	                }  
+				return false;
+			}
+		};
+		
     	btnYuelist.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -315,8 +334,18 @@ public class MainActivity extends FragmentActivity {
     		}
 
     	});
+    	ett_mvSearch.setOnKeyListener(popListener);
+		btn_confirm.setOnKeyListener(popListener);
+		btnYuelist.setOnKeyListener(popListener);
+		spn_artist_area.setOnKeyListener(popListener);
+		spn_artist_sort.setOnKeyListener(popListener);
+		spn_page.setOnKeyListener(popListener);
+		spn_video_sort.setOnKeyListener(popListener);
+		spn_sort_way.setOnKeyListener(popListener);
 		return popWindow;
     }
+    
+
 	/**
 	 * �������뷨����
 	 */

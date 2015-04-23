@@ -105,6 +105,11 @@ private void initView(){
 }
 
 @Override
+protected void onResume() {
+	super.onResume();
+	play(index);
+}
+@Override
 public boolean onKeyDown(int keyCode, KeyEvent event) {
 	tv_title.setVisibility(View.VISIBLE);
 	titleHandler.postDelayed(new Runnable() {
@@ -208,7 +213,7 @@ private View initPopupWindow(){
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
-			wv.setVisibility(View.VISIBLE);
+//			wv.setVisibility(View.VISIBLE);
 			wv.loadUrl("http://zh.wikipedia.org/zh/"+adapter.getItem(arg2));
 		}
 		
