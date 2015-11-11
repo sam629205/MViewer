@@ -15,6 +15,8 @@
     android:gravity="center"
     android:background="@drawable/search_user_popup_corner"
     android:orientation="vertical">
+    <Button android:id="@+id/btnRanks" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="音乐榜单" android:focusable="true" android:focusableInTouchMode="true"
+         android:textSize="20sp" android:paddingLeft="90dp" android:paddingRight="90dp" android:paddingTop="15dp" android:paddingBottom="15dp"/>
     <Button android:id="@+id/btnYuelist" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="音乐悦单" android:focusable="true" android:focusableInTouchMode="true"
          android:textSize="20sp" android:paddingLeft="90dp" android:paddingRight="90dp" android:paddingTop="15dp" android:paddingBottom="15dp"/>
     <LinearLayout 
@@ -148,6 +150,7 @@
                 android:layout_weight="0.4"
                 android:spinnerMode="dialog"
                 android:layout_height="wrap_content"
+                android:nextFocusDown="@+id/btn_ok"
                 /> 
         </LinearLayout>
         
@@ -165,7 +168,8 @@
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:textColor="#000000"
-                android:text="确定"/>
+                android:text="确定"
+                android:nextFocusRight="@+id/btn_cancel"/>
             <Button 
                 android:id="@+id/btn_cancel"
                 android:layout_width="100dip"
@@ -177,7 +181,8 @@
                 android:paddingRight="10dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                android:nextFocusLeft="@+id/btn_ok"/>
      </LinearLayout>
 </LinearLayout>
 </LinearLayout>

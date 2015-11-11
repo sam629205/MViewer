@@ -156,6 +156,15 @@ private void play(int i){
 	final StringBuilder str = new StringBuilder();
 	str.append("http://www.flvcd.com/parse.php?kw=");
 	String originLink = infoList.get(i).getLink();
+	if (originLink==null||originLink.equals("")) {
+		if (index==infoList.size()-1) {
+			index=0;
+		}else {
+			index++;
+		}
+		play(index);
+		return;
+	}
 	String codedLink = URLEncoder.encode(originLink);
 	str.append(codedLink);
 	str.append("&format=");

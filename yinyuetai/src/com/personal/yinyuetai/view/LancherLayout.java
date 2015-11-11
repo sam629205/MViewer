@@ -14,10 +14,11 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.personal.yinyuetai.R;
 import com.personal.yinyuetai.activity.MainActivity;
+import com.personal.yinyuetai.activity.RanksActivity;
 import com.personal.yinyuetai.activity.VideoPlayActivity;
 import com.personal.yinyuetai.bean.ArtistInfo;
 import com.personal.yinyuetai.util.DensityUtil;
@@ -27,6 +28,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.location.Location;
 import android.os.Bundle;
@@ -207,9 +209,11 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		
 		options = new DisplayImageOptions.Builder()
-		.displayer(new RoundedBitmapDisplayer(0xff000000, 2))
-		.cacheInMemory()
-		.cacheOnDisc()
+		.showImageForEmptyUri(R.drawable.nothing)
+		.showImageOnFail(R.drawable.nothing)
+		.cacheInMemory(true)
+		.cacheOnDisk(true)
+		.considerExifParams(true)
 		.build();
 		
 		int[] arrayOfInt = new int[7];
@@ -250,26 +254,29 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 			tvs[0].startScroll();
 			imageLoader.displayImage(infoList.get(3*listIndex).getImg(), imageViews[0], options,new ImageLoadingListener() {
 				
+
 				@Override
-				public void onLoadingStarted() {
+				public void onLoadingCancelled(String arg0, View arg1) {
 					// TODO Auto-generated method stub
 					
 				}
-				
+
 				@Override
-				public void onLoadingFailed(FailReason failReason) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void onLoadingComplete(Bitmap loadedImage) {
+				public void onLoadingComplete(String arg0, View arg1,
+						Bitmap arg2) {
 					arrayOfImageView[0].setImageBitmap(ImageReflect.createCutReflectedImage(ImageReflect.convertViewToBitmap(frameLayoutViews[0]), 0));
 					
 				}
-				
+
 				@Override
-				public void onLoadingCancelled() {
+				public void onLoadingFailed(String arg0, View arg1,
+						FailReason arg2) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onLoadingStarted(String arg0, View arg1) {
 					// TODO Auto-generated method stub
 					
 				}
@@ -278,59 +285,67 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 		if (3*listIndex+1<infoList.size()) {
 			tvs[1].setText(infoList.get(3*listIndex+1).getTitle());
 			imageLoader.displayImage(infoList.get(3*listIndex+1).getImg(), imageViews[1], options,new ImageLoadingListener() {
-				
+
 				@Override
-				public void onLoadingStarted() {
+				public void onLoadingCancelled(String arg0, View arg1) {
 					// TODO Auto-generated method stub
 					
 				}
-				
+
 				@Override
-				public void onLoadingFailed(FailReason failReason) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void onLoadingComplete(Bitmap loadedImage) {
+				public void onLoadingComplete(String arg0, View arg1,
+						Bitmap arg2) {
 					arrayOfImageView[1].setImageBitmap(ImageReflect.createCutReflectedImage(ImageReflect.convertViewToBitmap(frameLayoutViews[1]), 0));
 					
 				}
-				
+
 				@Override
-				public void onLoadingCancelled() {
+				public void onLoadingFailed(String arg0, View arg1,
+						FailReason arg2) {
 					// TODO Auto-generated method stub
 					
 				}
+
+				@Override
+				public void onLoadingStarted(String arg0, View arg1) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+
 			});
 		}
 		if (3*listIndex+2<infoList.size()) {
 			tvs[2].setText(infoList.get(3*listIndex+2).getTitle());
 			imageLoader.displayImage(infoList.get(3*listIndex+2).getImg(), imageViews[2], options,new ImageLoadingListener() {
-				
+
 				@Override
-				public void onLoadingStarted() {
+				public void onLoadingCancelled(String arg0, View arg1) {
 					// TODO Auto-generated method stub
 					
 				}
-				
+
 				@Override
-				public void onLoadingFailed(FailReason failReason) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void onLoadingComplete(Bitmap loadedImage) {
+				public void onLoadingComplete(String arg0, View arg1,
+						Bitmap arg2) {
 					arrayOfImageView[2].setImageBitmap(ImageReflect.createCutReflectedImage(ImageReflect.convertViewToBitmap(frameLayoutViews[2]), 0));
 					
 				}
-				
+
 				@Override
-				public void onLoadingCancelled() {
+				public void onLoadingFailed(String arg0, View arg1,
+						FailReason arg2) {
 					// TODO Auto-generated method stub
 					
 				}
+
+				@Override
+				public void onLoadingStarted(String arg0, View arg1) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+
 			});
 		}
 		
@@ -339,48 +354,7 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 		
 		tvs[1].startScroll();
 		tvs[2].startScroll();
-//		imageViews[0].setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View arg0) {
-//				Intent intent = new Intent();
-//				intent.setClass(context, VideoPlayActivity.class);
-//				Bundle bundle = new Bundle();
-//				bundle.putSerializable("infoList", (Serializable) infoList);
-//				bundle.putInt("index", 3*listIndex);
-//				intent.putExtras(bundle);
-//				context.startActivity(intent);
-//				
-//			}
-//		});
-//		imageViews[1].setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View arg0) {
-//				Intent intent = new Intent();
-//				intent.setClass(context, VideoPlayActivity.class);
-//				Bundle bundle = new Bundle();
-//				bundle.putSerializable("infoList", (Serializable) infoList);
-//				bundle.putInt("index", 3*listIndex+1);
-//				intent.putExtras(bundle);
-//				context.startActivity(intent);
-//				
-//			}
-//		});
-//		imageViews[2].setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View arg0) {
-//				Intent intent = new Intent();
-//				intent.setClass(context, VideoPlayActivity.class);
-//				Bundle bundle = new Bundle();
-//				bundle.putSerializable("infoList", (Serializable) infoList);
-//				bundle.putInt("index", 3*listIndex+2);
-//				intent.putExtras(bundle);
-//				context.startActivity(intent);
-//				
-//			}
-//		});
+
 		
 		this.whiteBorder = ((ImageView) findViewById(R.id.white_boder));
 
@@ -458,6 +432,13 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 				((MainActivity)context).loadMore(true);
 			}else {
 				((MainActivity)context).loadMore(false);
+			}
+		}
+		if (context.getClass().equals(RanksActivity.class)) {
+			if (listIndex==listCount-1) {
+				((RanksActivity)context).loadMore(true);
+			}else {
+				((RanksActivity)context).loadMore(false);
 			}
 		}
 		int i = -1;

@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.jsoup.Jsoup;
@@ -13,7 +14,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.util.Log;
+
 import com.personal.yinyuetai.bean.ArtistInfo;
+import com.personal.yinyuetai.bean.RanksInfo;
+import com.personal.yinyuetai.bean.RanksInfo1;
 import com.personal.yinyuetai.bean.YueListInfo;
 
 public class getRealURL {
@@ -88,20 +93,25 @@ public List<ArtistInfo> parseWeb(String URL,int status) {
 			break;
 			//MV搜索解析
 		case 2:
-			Element root2 = doc.getElementById("search_result_list");
-			Elements elements5 = root2.getElementsByTag("a");
+			titleList = new String[24];
+			titleList2 = new String[24];
+			titleList3 = new String[24];
+			imgList = new String[24];
+			videoList = new String[24];
+			Elements elements5 = doc.getElementsByClass("mv");
 			for (Element ele:elements5) {
-				if (ele.select("a").attr("class").equals("img")) {
-					String img = ele.select("img").attr("src");
+					String img = ele.getElementsByTag("img").get(0).attr("src");
 					imgList[j]=img;
-					String link = ele.select("a").attr("href");
-					String title = ele.select("img").attr("alt");
+					String link = ele.getElementsByClass("name").get(0).select("a").attr("href");
+					String title = ele.getElementsByClass("name").text();
+					String title2 = ele.getElementsByClass("artist").text();
 					titleList[i]=title;
+					titleList2[l]=title2;
+					l++;
 					i++;
 					videoList[k]=link;
 					k++;
 					j++;
-				}
 			}
 //			Elements elements6 = root2.getElementsByClass("title mv_title");
 //			for (Element ele:elements6) {
@@ -112,20 +122,20 @@ public List<ArtistInfo> parseWeb(String URL,int status) {
 //				videoList[k]=link;
 //				k++;
 //			}
-			Elements elements7 = root2.getElementsByClass("artist");
-			for (Element ele:elements7) {
-				Elements mElements = ele.getElementsByTag("a");
-				String title = "";
-				if (mElements.size()>1) {
-					for (Element subEle:mElements) {
-						title=title+subEle.select("a").attr("title")+"&";
-					}
-				}else {
-					title=ele.select("a").attr("title");
-				}
-				titleList2[l]=title;
-				l++;
-			}
+//			Elements elements7 = root2.getElementsByClass("artist");
+//			for (Element ele:elements7) {
+//				Elements mElements = ele.getElementsByTag("a");
+//				String title = "";
+//				if (mElements.size()>1) {
+//					for (Element subEle:mElements) {
+//						title=title+subEle.select("a").attr("title")+"&";
+//					}
+//				}else {
+//					title=ele.select("a").attr("title");
+//				}
+//				titleList2[l]=title;
+//				l++;
+//			}
 			break;
 		case 3://悦单视频列表
 			Element content = doc.getElementById("mv_picker");
@@ -217,11 +227,45 @@ public List<YueListInfo> parseYueList(String URL,int status){
 	//Document doc = Jsoup.connect(URL).get();
 	return resultList;
 }
+public RanksInfo getRanks(String url){
+	RanksInfo info = new RanksInfo();
+	Document doc=null;
+	List<String> titleList = new ArrayList<String>();
+	List<RanksInfo1> infoList = new ArrayList<RanksInfo1>(); 
+	final String DESKTOP_USERAGENT = "Mozilla/5.0 (Macintosh; " +  
+			"U; Intel Mac OS X 10_6_3; en-us) AppleWebKit/533.16 (KHTML, " +  
+			"like Gecko) Version/5.0 Safari/533.16";  
+	try {
+		doc = Jsoup.connect(url).timeout(20000).userAgent(DESKTOP_USERAGENT).get();
+		Element ele = doc.getElementById("ul");
+		Elements eles = ele.getElementsByTag("li");
+		for (Element one:eles) {
+			titleList.add(one.attr("title"));
+		}
+		Elements eles1 = doc.getElementsByClass("list");
+		for (Element one:eles1) {
+			Elements eles2 = one.getElementsByTag("a");
+			List<String> urlList = new ArrayList<String>();
+			for (int i = eles2.size(); i > 0; i--) {
+				urlList.add(eles2.get(i-1).attr("href"));
+			}
+			RanksInfo1 subInfo = new RanksInfo1();
+			subInfo.setUrlList(urlList);
+			infoList.add(subInfo);
+		}
+		info.setTitleList(titleList);
+		info.setUrlList(infoList);
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	return info;
+}
 public String parseLink(String URL) {
 	Document doc=null;
 	String reaLink = null;
 	
 	try {
+		Log.e("URL", URL);
 		doc = Jsoup.connect(URL).header("User-Agent", "Mozilla/5.0 (Macintosh; U; "
 				+ "Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/"
 				+ "3.6.2").timeout(20000).get();

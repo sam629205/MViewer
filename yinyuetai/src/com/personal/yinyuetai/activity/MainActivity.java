@@ -10,6 +10,7 @@ import java.util.TimerTask;
 import android.app.ActionBar.LayoutParams;
 import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,7 +47,7 @@ public class MainActivity extends FragmentActivity {
 	private YueListFragment yuelistFragment;
 	private PopupWindow popupWindow;
 	private EditText ett_mvSearch;
-	private Button btn_confirm,btn_ok,btn_cancel,btnYuelist;
+	private Button btn_confirm,btn_ok,btn_cancel,btnYuelist,btnRanks;
 	private InputMethodManager imm;
 	String[] array1 = {"","ML","US","KR","HT","JP"};
 	String[] array2 = {"","Boy","Girl","Combo"};
@@ -159,6 +160,7 @@ public class MainActivity extends FragmentActivity {
     	btn_ok=(Button) popWindow.findViewById(R.id.btn_ok);
     	btn_cancel=(Button) popWindow.findViewById(R.id.btn_cancel);
     	btnYuelist = (Button) popWindow.findViewById(R.id.btnYuelist);
+    	btnRanks = (Button) popWindow.findViewById(R.id.btnRanks);
     	OnKeyListener popListener = new OnKeyListener() {
 			
 			@Override
@@ -187,6 +189,15 @@ public class MainActivity extends FragmentActivity {
 					ft.attach(yuelistFragment);
 				}
 				popupWindow.dismiss();
+			}
+		});
+    	btnRanks.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setClass(MainActivity.this, RanksActivity.class);
+				startActivity(intent);
 			}
 		});
     	btn_cancel.setOnClickListener(new OnClickListener() {
