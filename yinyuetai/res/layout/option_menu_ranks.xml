@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="#b5555555" 
+    android:orientation="vertical"
+    android:id="@+id/parent">
+<LinearLayout 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:id="@+id/contentll"
+    android:gravity="center"
+    android:background="@drawable/search_user_popup_corner"
+    android:orientation="vertical">
+    <LinearLayout android:padding="10dp" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center">
+        <Button android:id="@+id/btn_plus" android:background="@drawable/plus_selector" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <TextView android:id="@+id/tv_year" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" android:textColor="#000" android:textSize="18sp"/>
+        <Button android:id="@+id/btn_minus" android:background="@drawable/minus_selector" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <Button android:id="@+id/btn_plus1" android:background="@drawable/plus_selector" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <TextView android:id="@+id/tv_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" android:textColor="#000" android:textSize="18sp"/>
+        <Button android:id="@+id/btn_minus1" android:background="@drawable/minus_selector" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <Button 
+                android:id="@+id/btn_ok"
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:textColor="#000000"
+                android:text="确定"
+                />
+    </LinearLayout>
+    <RadioGroup 
+        android:id="@+id/rg" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <RadioButton android:id="@+id/rb_billboard" android:drawableLeft="@drawable/test" android:text="美国BillBoard" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:textColor="#000"/>
+        <RadioButton android:id="@+id/rb_mnet" android:drawableLeft="@drawable/icon_mnet" android:text="韩国M-net" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:textColor="#000"/>
+        <RadioButton android:id="@+id/rb_top" android:drawableLeft="@drawable/icon_top" android:text="中国TOP" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:textColor="#000"/>
+        <RadioButton android:id="@+id/rb_hito" android:drawableLeft="@drawable/icon_hito" android:text="台湾Hito" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:textColor="#000"/>
+        <RadioButton android:id="@+id/rb_japan" android:drawableLeft="@drawable/icon_oricon" android:text="日本公信" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:textColor="#000"/>
+    </RadioGroup>
+        
+        
+        
+        
+</LinearLayout>
+</LinearLayout>
