@@ -11,6 +11,14 @@ public class ArtistInfo implements Serializable{
 private String link;
 private String title;
 private String img;
+private String[] artist;
+
+public String[] getArtist() {
+	return artist;
+}
+public void setArtist(String[] artist) {
+	this.artist = artist;
+}
 public String getLink() {
 	return link;
 }

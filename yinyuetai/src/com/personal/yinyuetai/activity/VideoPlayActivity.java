@@ -5,6 +5,8 @@ import java.util.List;
 
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -25,6 +27,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.PopupWindow;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
 
 import com.personal.service.getRealURL;
@@ -50,6 +54,10 @@ public class VideoPlayActivity extends Activity implements OnCompletionListener{
 	private Button btn_cancel;
 	private NoScrollListView lv;
 	private WebView wv;
+	private int rgSelection;
+	private Context context;
+	public static int REQUEST_CODE = 0 ;
+
 @Override
 protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
@@ -202,6 +210,26 @@ private View initPopupWindow(){
 	LayoutInflater inflater = LayoutInflater.from(VideoPlayActivity.this);
 	View popWindow = inflater.inflate(R.layout.option_artistinfo, null);
 	btn_cancel=(Button) popWindow.findViewById(R.id.btn_cancel);
+	((RadioGroup)popWindow.findViewById(R.id.rg)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		
+		@Override
+		public void onCheckedChanged(RadioGroup group, int checkedId) {
+			switch (checkedId) {
+			case R.id.rb1:
+				rgSelection = 0 ;
+				break;
+			case R.id.rb2:
+				
+				rgSelection = 1 ;
+				
+				break;
+			default:
+				
+				break;
+			}
+			
+		}
+	});
 	btn_cancel.setOnClickListener(new OnClickListener() {
 		
 		@Override
@@ -222,8 +250,16 @@ private View initPopupWindow(){
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
-//			wv.setVisibility(View.VISIBLE);
-			wv.loadUrl("http://zh.wikipedia.org/zh/"+adapter.getItem(arg2));
+			if (rgSelection==0) {
+				Intent intent = new Intent();
+				intent.setClass(VideoPlayActivity.this, MainActivity.class);
+				intent.putExtra("keyword", adapter.getItem(arg2));
+				startActivity(intent);
+				finish();
+			}else if (rgSelection==1) {
+				wv.setVisibility(View.VISIBLE);
+				wv.loadUrl("http://zh.wikipedia.org/zh/"+adapter.getItem(arg2));
+			}
 		}
 		
 	});

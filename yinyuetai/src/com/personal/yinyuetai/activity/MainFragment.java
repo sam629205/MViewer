@@ -67,7 +67,6 @@ public class MainFragment extends Fragment {
     	new GetDataTask().execute("");
     }
     
-    
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

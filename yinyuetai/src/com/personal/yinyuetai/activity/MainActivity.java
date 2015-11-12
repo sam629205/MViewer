@@ -108,11 +108,18 @@ public class MainActivity extends FragmentActivity {
 		}
 		mainFragment = (MainFragment) fragmentManager.findFragmentByTag("mf");
 		yuelistFragment = (YueListFragment) fragmentManager.findFragmentByTag("yf");
-		if (mainFragment == null){
-			str.append("http://mv.yinyuetai.com/all?sort=weekViews");
-			mainFragment = new MainFragment(0, str);
-			fragmentTransaction.add(R.id.content_fl,mainFragment, "mf").commit();
+		if (getIntent().getStringExtra("keyword")!=null) {
+			if (mainFragment == null){
+				searchKeyword(getIntent().getStringExtra("keyword"));
+			}
+		}else {
+			if (mainFragment == null){
+				str.append("http://mv.yinyuetai.com/all?sort=weekViews");
+				mainFragment = new MainFragment(0, str);
+				fragmentTransaction.add(R.id.content_fl,mainFragment, "mf").commit();
+			}
 		}
+		
 
 	
 	}
@@ -124,7 +131,25 @@ public class MainActivity extends FragmentActivity {
 	public void loadMore1(boolean lastline){
 		this.lastline1 = lastline;
 	}
-	
+	public void searchKeyword(String keyword){
+		StringBuilder str = new StringBuilder();
+		str.append("http://so.yinyuetai.com/mv?sourceType=music_video&keyword=");
+		try {
+			str.append(URLEncoder.encode(keyword,"UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		mainFragment = new MainFragment(3, str);
+		fragmentTransaction.add(R.id.content_fl,mainFragment, "mf").commit();
+	}
+	@Override
+	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
+		super.onActivityResult(arg0, arg1, arg2);
+		if (arg0==VideoPlayActivity.REQUEST_CODE) {
+			searchKeyword(arg2.getStringExtra("keyword"));
+		}
+	}
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
     	if (keyCode==KeyEvent.KEYCODE_MENU) {
@@ -198,6 +223,7 @@ public class MainActivity extends FragmentActivity {
 				Intent intent = new Intent();
 				intent.setClass(MainActivity.this, RanksActivity.class);
 				startActivity(intent);
+				finish();
 			}
 		});
     	btn_cancel.setOnClickListener(new OnClickListener() {
@@ -222,8 +248,6 @@ public class MainActivity extends FragmentActivity {
 					e.printStackTrace();
 				}
 				mainFragment.changeContent(3, str);
-//				MainFragment mf = new MainFragment(3, str);
-//				getSupportFragmentManager().beginTransaction().replace(R.id.content_fl, mf).commit();
 				popupWindow.dismiss();
 				
 			}
@@ -348,6 +372,7 @@ public class MainActivity extends FragmentActivity {
     	ett_mvSearch.setOnKeyListener(popListener);
 		btn_confirm.setOnKeyListener(popListener);
 		btnYuelist.setOnKeyListener(popListener);
+		btnRanks.setOnKeyListener(popListener);
 		spn_artist_area.setOnKeyListener(popListener);
 		spn_artist_sort.setOnKeyListener(popListener);
 		spn_page.setOnKeyListener(popListener);

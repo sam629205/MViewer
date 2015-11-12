@@ -155,7 +155,7 @@ public class RanksActivity extends FragmentActivity{
 				titlesRemain = result.getTitleList().size();
 				for (int i = 0; i < titlesRemain; i++) {
 					int location = totalRemain+i;
-					new SearchTask().execute(result.getTitleList().get(i),i+"");
+					new SearchTask().execute(result.getTitleList().get(i),i+"",result.getNameList().get(i),result.getArtistList().get(i),location+"");
 				}
 				totalRemain = totalRemain + titlesRemain;
 				pageNum++;
@@ -180,15 +180,17 @@ public class RanksActivity extends FragmentActivity{
 	private class SearchTask extends AsyncTask<String, Void, List<ArtistInfo>>{
 		private int mLocation;
 		private String mTitle;
+		private String mArtist;
 
 		@Override
 		protected List<ArtistInfo> doInBackground(String... params) {
 			getRealURL get = new getRealURL();
 			StringBuilder str = new StringBuilder();
-			str.append("http://so.yinyuetai.com/mv?keyword=");
-			str.append(URLEncoder.encode(params[0]));
+			str.append("http://so.yinyuetai.com/mv?sourceType=music_video&keyword=");
+			str.append(URLEncoder.encode(params[2]));
 			mLocation = Integer.parseInt(params[1]);
 			mTitle = params[0];
+			mArtist = params[3];
 			return get.parseWeb(str.toString(), 2);
 		}
 		@Override
@@ -197,10 +199,19 @@ public class RanksActivity extends FragmentActivity{
 			ArtistInfo mInfo = new ArtistInfo();
 			if (result.size()>0&&result.get(0).getImg()!=null) {
 				super.onPostExecute(result);
+				boolean searchOK = false;
 				for (int i = 0; i < result.size(); i++) {
-					if (result.get(i).getTitle().indexOf("榜")==-1) {
-						mInfo = result.get(i);
-						break;
+					if (result.get(i).getArtist()!=null&&!searchOK) {
+						for (int j = 0; j < result.get(i).getArtist().length; j++) {
+							if (mArtist.indexOf(result.get(i).getArtist()[j].trim())!=-1) {
+								mInfo = result.get(i);
+								searchOK = true ;
+								break;
+							}
+						}
+						if (searchOK) {
+							break;
+						}
 					}
 				}
 			}else {
@@ -314,6 +325,8 @@ public class RanksActivity extends FragmentActivity{
     		
     		public void onClick(View v) {
     			pageNum=1;
+    			url1 = nextPageUrl();
+    			totalRemain = 0 ;
     			if (urlList!=null&&urlList.size()>0) {
     				int mPosition = currentYear - calendar.get(Calendar.YEAR);
     				int mPosition1 = calendar.get(Calendar.WEEK_OF_YEAR);
@@ -371,7 +384,11 @@ public class RanksActivity extends FragmentActivity{
 		btnMinus.setOnKeyListener(popListener);
 		btnMinus1.setOnKeyListener(popListener);
 		btnOK.setOnKeyListener(popListener);
-		rg.setOnKeyListener(popListener);
+		((RadioButton)popWindow.findViewById(R.id.rb_billboard)).setOnKeyListener(popListener);
+		((RadioButton)popWindow.findViewById(R.id.rb_mnet)).setOnKeyListener(popListener);
+		((RadioButton)popWindow.findViewById(R.id.rb_top)).setOnKeyListener(popListener);
+		((RadioButton)popWindow.findViewById(R.id.rb_hito)).setOnKeyListener(popListener);
+		((RadioButton)popWindow.findViewById(R.id.rb_japan)).setOnKeyListener(popListener);
 		return popWindow;
     }
     private void updateYearNum(int position ,int off){

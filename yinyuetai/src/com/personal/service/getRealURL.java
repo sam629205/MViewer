@@ -173,6 +173,10 @@ public List<ArtistInfo> parseWeb(String URL,int status) {
 			mInfo.setImg(imgList[i2]);
 			mInfo.setLink(videoList[i2]);
 			mInfo.setTitle(titleList3[i2]);
+			if (titleList2[i2]!=null) {
+				String[] mArtists = titleList2[i2].split("&");
+				mInfo.setArtist(mArtists);
+			}
 			resultList.add(mInfo);
 		}
 	} catch (MalformedURLException e) {
@@ -231,6 +235,8 @@ public RanksInfo getRanks(String url){
 	RanksInfo info = new RanksInfo();
 	Document doc=null;
 	List<String> titleList = new ArrayList<String>();
+	List<String> artistList = new ArrayList<String>();
+	List<String> nameList = new ArrayList<String>();
 	List<RanksInfo1> infoList = new ArrayList<RanksInfo1>(); 
 	final String DESKTOP_USERAGENT = "Mozilla/5.0 (Macintosh; " +  
 			"U; Intel Mac OS X 10_6_3; en-us) AppleWebKit/533.16 (KHTML, " +  
@@ -241,6 +247,9 @@ public RanksInfo getRanks(String url){
 		Elements eles = ele.getElementsByTag("li");
 		for (Element one:eles) {
 			titleList.add(one.attr("title"));
+			String mTitle = one.attr("title");
+			nameList.add(mTitle.split("-")[1].trim());
+			artistList.add(mTitle.split("-")[0].trim());
 		}
 		Elements eles1 = doc.getElementsByClass("list");
 		for (Element one:eles1) {
@@ -253,6 +262,8 @@ public RanksInfo getRanks(String url){
 			subInfo.setUrlList(urlList);
 			infoList.add(subInfo);
 		}
+		info.setNameList(nameList);
+		info.setArtistList(artistList);
 		info.setTitleList(titleList);
 		info.setUrlList(infoList);
 	} catch (IOException e) {
