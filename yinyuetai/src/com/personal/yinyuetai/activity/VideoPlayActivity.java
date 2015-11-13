@@ -1,5 +1,6 @@
 package com.personal.yinyuetai.activity;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,6 +36,7 @@ import android.widget.Toast;
 import com.personal.service.getRealURL;
 import com.personal.yinyuetai.R;
 import com.personal.yinyuetai.bean.ArtistInfo;
+import com.personal.yinyuetai.bean.BaikeInfo;
 import com.personal.yinyuetai.view.AlwaysMarqueeTextView;
 import com.personal.yinyuetai.view.MyVideoView;
 import com.personal.yinyuetai.view.NoScrollListView;
@@ -257,12 +260,33 @@ private View initPopupWindow(){
 				startActivity(intent);
 				finish();
 			}else if (rgSelection==1) {
-				wv.setVisibility(View.VISIBLE);
-				wv.loadUrl("http://zh.wikipedia.org/zh/"+adapter.getItem(arg2));
+				try {
+					String mKwd = URLEncoder.encode((String) adapter.getItem(arg2), "UTF-8");
+					new BaikeSearchTask().execute("http://baike.baidu.com/search?word="+mKwd);
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		
 	});
 	return popWindow;
+}
+private class BaikeSearchTask extends AsyncTask<String, Void, BaikeInfo>{
+
+	@Override
+	protected BaikeInfo doInBackground(String... params) {
+		return new getRealURL().parseBaike(params[0], 0);
+	}
+	@Override
+	protected void onPostExecute(BaikeInfo resultInfo) {
+		if (resultInfo!=null&&resultInfo.getUrlList().size()>0) {
+			super.onPostExecute(resultInfo);
+			final Uri uri = Uri.parse(resultInfo.getUrlList().get(0));          
+			final Intent it = new Intent(Intent.ACTION_VIEW, uri);          
+			startActivity(it);
+		}
+	}
 }
 }

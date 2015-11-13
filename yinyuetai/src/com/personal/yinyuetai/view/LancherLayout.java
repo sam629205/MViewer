@@ -465,36 +465,55 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 		case R.id.iv1:
 			i = 0;
 			// 此处设置不同大小的item的长�?,下面同理省去，同样大小，就未设置,直接初始
-			// width = DensityUtil.dip2px(context, 247);// 放大前的�?
-			// height = DensityUtil.dip2px(context, 357);// 放大前的�?
-//			x = DensityUtil.dip2px(context, xoff);
-//			y = DensityUtil.dip2px(context, yoff);
 			x = loc[0]-offset;
 			y = yoff;
 			// 此处可封装出数学算法，计算偏移量的x,y值�?我懒得算了，直接设置�?
 			break;
 		case R.id.iv2:
 			i = 1;
-//			x = DensityUtil.dip2px(context, xoff+335);
-//			y = DensityUtil.dip2px(context, yoff);
 			x = loc1[0]-offset;
 			y = yoff;
 			break;
 		case R.id.iv3:
 			i = 2;
-//			x = DensityUtil.dip2px(context, xoff+671);
-//			y = DensityUtil.dip2px(context, yoff);
 			x = loc2[0]-offset;
 			y = yoff;
 			break;
 		}
 		if (paramBoolean) {
 //			showOnFocusAnimation(i);
-			Message message = new Message();
-			message.what = 0;
-			mHandler.sendMessage(message);
+//			Message message = new Message();
+//			message.what = 0;
+//			mHandler.sendMessage(message);
+			switch (i) {
+			case 0:
+				((LinearLayout)findViewById(R.id.borderLL1)).setBackgroundResource(R.drawable.border_bg);
+				break;
+			case 1:
+				((LinearLayout)findViewById(R.id.borderLL2)).setBackgroundResource(R.drawable.border_bg);			
+				break;
+			case 2:
+				((LinearLayout)findViewById(R.id.borderLL3)).setBackgroundResource(R.drawable.border_bg);
+				break;
+			default:
+				break;
+			}
+			
 		} else {
 			showLooseFocusAinimation(i);
+			switch (i) {
+			case 0:
+				((LinearLayout)findViewById(R.id.borderLL1)).setBackgroundColor(getResources().getColor(R.color.transparent));
+				break;
+			case 1:
+				((LinearLayout)findViewById(R.id.borderLL2)).setBackgroundColor(getResources().getColor(R.color.transparent));
+				break;
+			case 2:
+				((LinearLayout)findViewById(R.id.borderLL3)).setBackgroundColor(getResources().getColor(R.color.transparent));
+				break;
+			default:
+				break;
+			}
 			this.whiteBorder.setVisibility(View.INVISIBLE);
 		}
 	}

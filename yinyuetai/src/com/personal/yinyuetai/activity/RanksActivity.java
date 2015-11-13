@@ -55,6 +55,7 @@ import com.personal.yinyuetai.adapter.QueryAdapter;
 import com.personal.yinyuetai.bean.ArtistInfo;
 import com.personal.yinyuetai.bean.RanksInfo;
 import com.personal.yinyuetai.bean.RanksInfo1;
+import com.personal.yinyuetai.util.Preference;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.analytics.e;
 import com.umeng.update.UmengUpdateAgent;
@@ -76,7 +77,7 @@ public class RanksActivity extends FragmentActivity{
     Handler handler= new Handler();
     Handler handler2 = new Handler();
 	private static SharedPreferences appPreferences = null;
-	public  int selectIndex,selectIndex1=R.id.rb_billboard;
+	public  int selectIndex=R.id.rb_billboard,selectIndex1=R.id.rb_billboard;
 	private boolean lastline;
 	private ProgressDialog waitBar;
 	private PullToRefreshListView ptrl;
@@ -92,6 +93,7 @@ public class RanksActivity extends FragmentActivity{
 	private String[] defaultUrl = {"http://www.kugou.com/yy/rank/home/1-4681.html",
 			"http://www.kugou.com/yy/rank/home/1-4672.html","http://www.kugou.com/yy/rank/home/1-22163.html",
 			"http://www.kugou.com/yy/rank/home/1-4688.html","http://www.kugou.com/yy/rank/home/1-4673.html"};
+	private int mPosition,mPosition1,mPosition2;
 	/**
 	 * 是否是点击menu键打开popupWindow的，默认为false
 	 */
@@ -150,23 +152,34 @@ public class RanksActivity extends FragmentActivity{
 		@Override
 		protected void onPostExecute(RanksInfo result) {
 			urlList = result.getUrlList();
-			if (result.getTitleList().size()>0) {
-				super.onPostExecute(result);
-				titlesRemain = result.getTitleList().size();
-				for (int i = 0; i < titlesRemain; i++) {
-					int location = totalRemain+i;
-					new SearchTask().execute(result.getTitleList().get(i),i+"",result.getNameList().get(i),result.getArtistList().get(i),location+"");
-				}
-				totalRemain = totalRemain + titlesRemain;
-				pageNum++;
-				url1 = nextPageUrl();
-			}else {
+			if (selectIndex!=selectIndex1) {
+				selectIndex = selectIndex1;
+				setSubUrl();
 				// 关闭等待对话框
 				if (waitBar != null) {
 					waitBar.dismiss();
 					waitBar = null;
 				}
-				Toast.makeText(RanksActivity.this, "没有更多数据了", Toast.LENGTH_SHORT).show();
+				new DataTask().execute();
+			}else {
+				if (result.getTitleList().size()>0) {
+					super.onPostExecute(result);
+					titlesRemain = result.getTitleList().size();
+					for (int i = 0; i < titlesRemain; i++) {
+						int location = totalRemain+i;
+						new SearchTask().execute(result.getTitleList().get(i),i+"",result.getNameList().get(i),result.getArtistList().get(i),location+"");
+					}
+					totalRemain = totalRemain + titlesRemain;
+					pageNum++;
+					url1 = nextPageUrl();
+				}else {
+					// 关闭等待对话框
+					if (waitBar != null) {
+						waitBar.dismiss();
+						waitBar = null;
+					}
+					Toast.makeText(RanksActivity.this, "没有更多数据了", Toast.LENGTH_SHORT).show();
+				}
 			}
 		}
 	}
@@ -186,8 +199,14 @@ public class RanksActivity extends FragmentActivity{
 		protected List<ArtistInfo> doInBackground(String... params) {
 			getRealURL get = new getRealURL();
 			StringBuilder str = new StringBuilder();
-			str.append("http://so.yinyuetai.com/mv?sourceType=music_video&keyword=");
+			str.append("http://so.yinyuetai.com/mv?keyword=");
 			str.append(URLEncoder.encode(params[2]));
+			str.append("&area=");
+			str.append(MainActivity.array1[Preference.getInt("item1")]);
+			str.append("&property=");
+			str.append(MainActivity.array2[Preference.getInt("item2")]);
+			str.append("&sourceType=");
+			str.append(MainActivity.array4[Preference.getInt("item4")]);
 			mLocation = Integer.parseInt(params[1]);
 			mTitle = params[0];
 			mArtist = params[3];
@@ -213,6 +232,11 @@ public class RanksActivity extends FragmentActivity{
 							break;
 						}
 					}
+				}
+				if (!searchOK) {
+					mInfo.setTitle(mTitle);
+					mInfo.setImg("assets://nothing.png");
+					mInfo.setLink("");
 				}
 			}else {
 				mInfo.setTitle(mTitle);
@@ -325,30 +349,15 @@ public class RanksActivity extends FragmentActivity{
     		
     		public void onClick(View v) {
     			pageNum=1;
-    			url1 = nextPageUrl();
     			totalRemain = 0 ;
     			if (urlList!=null&&urlList.size()>0) {
-    				int mPosition = currentYear - calendar.get(Calendar.YEAR);
-    				int mPosition1 = calendar.get(Calendar.WEEK_OF_YEAR);
-    				int weekOff = 0;
-    				//判断是否当年，计算偏移量
-    				if (mPosition==0) {
-						weekOff = currentYearWeeks - urlList.get(mPosition).getUrlList().size();
+    				if (selectIndex1==selectIndex) {
+    					setSubUrl();
+    					new DataTask().execute();
 					}else {
-						weekOff = com.personal.yinyuetai.util.Utils.getMaxWeekNumOfYear(mPosition) - urlList.get(mPosition).getUrlList().size();
-					}
-    				int mPosition2 = mPosition1-1-weekOff;
-    				if (mPosition2<0||mPosition2>(urlList.get(mPosition).getUrlList().size()-1)) {
-						Toast.makeText(RanksActivity.this, "所选日期没有数据", Toast.LENGTH_SHORT).show();
-						return;
-					}
-    				if (url1.equals(url)) {
-    					url1 = urlList.get(mPosition).getUrlList().get(mPosition2);
-					}else {
-						url = url1;
+						new DataTask().execute();
 					}
 				}
-    			new DataTask().execute();
     			popupWindow.dismiss();
     		}
 
@@ -390,6 +399,23 @@ public class RanksActivity extends FragmentActivity{
 		((RadioButton)popWindow.findViewById(R.id.rb_hito)).setOnKeyListener(popListener);
 		((RadioButton)popWindow.findViewById(R.id.rb_japan)).setOnKeyListener(popListener);
 		return popWindow;
+    }
+    private void setSubUrl(){
+    	mPosition = currentYear - calendar.get(Calendar.YEAR);
+		mPosition1 = calendar.get(Calendar.WEEK_OF_YEAR);
+		int weekOff = 0;
+		//判断是否当年，计算偏移量
+		if (mPosition==0) {
+			weekOff = currentYearWeeks - urlList.get(mPosition).getUrlList().size();
+		}else {
+			weekOff = com.personal.yinyuetai.util.Utils.getMaxWeekNumOfYear(mPosition) - urlList.get(mPosition).getUrlList().size();
+		}
+		mPosition2 = mPosition1-1-weekOff;
+		if (mPosition2<0||mPosition2>(urlList.get(mPosition).getUrlList().size()-1)) {
+			Toast.makeText(RanksActivity.this, "所选日期没有数据", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		url1 = urlList.get(mPosition).getUrlList().get(mPosition2);
     }
     private void updateYearNum(int position ,int off){
     	calendar.add(position, off);

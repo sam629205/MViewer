@@ -20,6 +20,7 @@
     <item>官方版</item>
     <item>现场</item>
     <item>演唱会</item>
+    <item>字幕版</item>
 </string-array> 
  <string-array name="sort_way">
     <item>最新上传</item>

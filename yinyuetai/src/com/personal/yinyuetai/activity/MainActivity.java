@@ -36,6 +36,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.personal.yinyuetai.R;
+import com.personal.yinyuetai.util.Preference;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
@@ -49,10 +50,10 @@ public class MainActivity extends FragmentActivity {
 	private EditText ett_mvSearch;
 	private Button btn_confirm,btn_ok,btn_cancel,btnYuelist,btnRanks;
 	private InputMethodManager imm;
-	String[] array1 = {"","ML","US","KR","HT","JP"};
-	String[] array2 = {"","Boy","Girl","Combo"};
-	String[] array3 = {"pubdate","dayViews","weekViews","monthViews"};
-	String[] array4 = {"","FirstShow","music_video","live","concert"};
+	public static String[] array1 = {"","ML","US","KR","HT","JP"};
+	public static String[] array2 = {"","Boy","Girl","Combo"};
+	public static String[] array3 = {"pubdate","dayViews","weekViews","monthViews"};
+	public static String[] array4 = {"","FirstShow","music_video","live","concert","subtitle"};
 	String[] array5 = {"super","high",""};
 	int item1=0,item2=0,item3=0,item4=0,item5=0,item6=0,item7=0;
     private Spinner spn_artist_area,spn_artist_sort,spn_video_sort,spn_sort_way,spn_page,spn_artist_area2,spn_artist_sort2;
@@ -95,11 +96,15 @@ public class MainActivity extends FragmentActivity {
 	}
 	private void initView(Bundle savedInstanceState) {
 		//同步友盟统计数据
-				MobclickAgent.updateOnlineConfig(MainActivity.this);
+		MobclickAgent.updateOnlineConfig(MainActivity.this);
 
 		//友盟更新
 		UmengUpdateAgent.setDefault();
 		UmengUpdateAgent.forceUpdate(MainActivity.this);
+		item1 = Preference.getInt("item1");
+		item2 = Preference.getInt("item2");
+		item3 = Preference.getInt("item3");
+		item4 = Preference.getInt("item4");
 		fragmentManager = getSupportFragmentManager();
 		fragmentTransaction = fragmentManager.beginTransaction();
 		// ����������Fragment��ͼ����
@@ -243,6 +248,12 @@ public class MainActivity extends FragmentActivity {
 				str.append("http://so.yinyuetai.com/mv?keyword=");
 				try {
 					str.append(URLEncoder.encode(ett_mvSearch.getText().toString(),"UTF-8"));
+					str.append("&area=");
+					str.append(array1[Preference.getInt("item1")]);
+					str.append("&property=");
+					str.append(array2[Preference.getInt("item2")]);
+					str.append("&sourceType=");
+					str.append(array4[Preference.getInt("item4")]);
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -263,6 +274,7 @@ public class MainActivity extends FragmentActivity {
     		public void onItemSelected(AdapterView<?> parent,View view, int position, long id) {
     			Spinner spinner = (Spinner) parent;
     			item1 = position;
+    			Preference.putInt("item1", item1);
     		}
     		@Override
     		public void onNothingSelected(AdapterView<?> parent) {
@@ -281,6 +293,7 @@ public class MainActivity extends FragmentActivity {
     		public void onItemSelected(AdapterView<?> parent,View view, int position, long id) {
     			Spinner spinner = (Spinner) parent;
     			item2 = position;
+    			Preference.putInt("item2", item2);
     		}
     		@Override
     		public void onNothingSelected(AdapterView<?> parent) {
@@ -299,6 +312,7 @@ public class MainActivity extends FragmentActivity {
     		public void onItemSelected(AdapterView<?> parent,View view, int position, long id) {
     			Spinner spinner = (Spinner) parent;
     			item3 = position;
+    			Preference.putInt("item3", item3);
     		}
     		@Override
     		public void onNothingSelected(AdapterView<?> parent) {
@@ -317,6 +331,7 @@ public class MainActivity extends FragmentActivity {
     		public void onItemSelected(AdapterView<?> parent,View view, int position, long id) {
     			Spinner spinner = (Spinner) parent;
     			item4 = position;
+    			Preference.putInt("item4", item4);
     		}
     		@Override
     		public void onNothingSelected(AdapterView<?> parent) {
@@ -336,7 +351,6 @@ public class MainActivity extends FragmentActivity {
     			Spinner spinner = (Spinner) parent;
     			item5 = position;
     			appPreferences.edit().putString("Definition", array5[item5]).commit();
-    			System.out.print(array5[item5]);
     		}
     		@Override
     		public void onNothingSelected(AdapterView<?> parent) {

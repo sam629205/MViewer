@@ -17,6 +17,7 @@ import org.jsoup.select.Elements;
 import android.util.Log;
 
 import com.personal.yinyuetai.bean.ArtistInfo;
+import com.personal.yinyuetai.bean.BaikeInfo;
 import com.personal.yinyuetai.bean.RanksInfo;
 import com.personal.yinyuetai.bean.RanksInfo1;
 import com.personal.yinyuetai.bean.YueListInfo;
@@ -189,6 +190,35 @@ public List<ArtistInfo> parseWeb(String URL,int status) {
 	return resultList;
 
 }
+public BaikeInfo parseBaike(String url,int status){
+	BaikeInfo result = new BaikeInfo();
+	Document doc=null;
+	List<String> urlList = new ArrayList<>();
+	final String DESKTOP_USERAGENT = "Mozilla/5.0 (Macintosh; " +  
+			"U; Intel Mac OS X 10_6_3; en-us) AppleWebKit/533.16 (KHTML, " +  
+			"like Gecko) Version/5.0 Safari/533.16";  
+	try {
+		doc = Jsoup.connect(url).timeout(20000).userAgent(DESKTOP_USERAGENT).get();
+		switch (status) {
+		case 0:
+			Elements elements = doc.getElementsByClass("result-title");
+			for (Element ele:elements) {
+				urlList.add(ele.attr("href"));
+			}
+			break;
+		case 1:
+			
+			break;
+		default:
+			break;
+		}
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	result.setUrlList(urlList);
+	return result;
+}
 public List<YueListInfo> parseYueList(String URL,int status){
 	Document doc=null;
 	List<YueListInfo> resultList = new ArrayList<YueListInfo>();
@@ -248,7 +278,11 @@ public RanksInfo getRanks(String url){
 		for (Element one:eles) {
 			titleList.add(one.attr("title"));
 			String mTitle = one.attr("title");
-			nameList.add(mTitle.split("-")[1].trim());
+			String mName = mTitle.split("-")[1].trim();
+			if (mName.indexOf("(")!=-1) {
+				mName = mName.substring(0,mName.indexOf("("));
+			}
+			nameList.add(mName);
 			artistList.add(mTitle.split("-")[0].trim());
 		}
 		Elements eles1 = doc.getElementsByClass("list");
