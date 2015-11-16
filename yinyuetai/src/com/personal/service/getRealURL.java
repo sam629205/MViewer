@@ -139,25 +139,23 @@ public List<ArtistInfo> parseWeb(String URL,int status) {
 //			}
 			break;
 		case 3://悦单视频列表
-			Element content = doc.getElementById("mv_picker");
-			Elements elements8 = content.getElementsByClass("mv2_1x2");
+			Elements elements8 = doc.getElementsByClass("mv_picBox");
 			titleList = new String[elements8.size()];
 			titleList2 = new String[elements8.size()];
 			titleList3 = new String[elements8.size()];
 			imgList = new String[elements8.size()];
 			videoList = new String[elements8.size()];
 			for (Element ele : elements8) {
-				titleList[i] = ele.select("a").attr("title");
-				Elements actorEles = ele.getElementsByClass("c_cf9");
+				titleList[i] = ele.attr("data-title");
+				Elements actorEles = ele.getElementsByClass("mv_text02");
 				titleList2[i] = actorEles.get(0).text();
 				imgList[i] = ele.select("img").attr("src");
-				Elements linkEles = ele.getElementsByTag("div");
 				String link = null;
-				if (linkEles.get(0).attr("data-id").equals("")) {
+				if (ele.attr("data-id").equals("")) {
 					String[] tempArray = imgList[i].split("/");
 					link = "http://v.yinyuetai.com/video/"+tempArray[5];
 				}else {
-					link = "http://v.yinyuetai.com/video/"+linkEles.get(0).attr("data-id");
+					link = "http://v.yinyuetai.com/video/"+ele.attr("data-id");
 				}
 				videoList[i] = link;
 				i++;
@@ -236,10 +234,24 @@ public List<YueListInfo> parseYueList(String URL,int status){
 		int i=0,j=0,k=0,l=0;
 		switch (status) {
 		case 0://悦单列表
-			Elements elements = doc.getElementsByClass("thumb_box");
+			Elements elements = doc.getElementsByClass("pl_img");
 			for (Element ele : elements) {
 				Elements mElements = ele.getElementsByTag("a");
 				String title = mElements.get(0).attr("title");
+				String link = mElements.get(0).attr("href");
+				String imgUrl = mElements.get(0).select("img").attr("src");
+				YueListInfo info = new YueListInfo();
+				info.setTitle(title);
+				info.setImgUrl(imgUrl);
+				info.setLink(link);
+				resultList.add(info);
+			}
+			break;
+		case 1://悦单列表搜索
+			Elements elements1 = doc.getElementsByClass("cover");
+			for (Element ele : elements1) {
+				Elements mElements = ele.getElementsByTag("a");
+				String title = mElements.get(0).select("img").attr("alt");
 				String link = mElements.get(0).attr("href");
 				String imgUrl = mElements.get(0).select("img").attr("src");
 				YueListInfo info = new YueListInfo();

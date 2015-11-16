@@ -67,6 +67,7 @@ public class MainActivity extends FragmentActivity {
 	private boolean lastline1;
 	private FragmentTransaction fragmentTransaction;
 	private FragmentManager fragmentManager;
+	private int fragmentIndex;
 	/**
 	 * 是否是点击menu键打开popupWindow的，默认为false
 	 */
@@ -166,7 +167,7 @@ public class MainActivity extends FragmentActivity {
 				mainFragment.loadMore();
 			}
 			if (lastline1) {
-				yuelistFragment.loadMore();
+				yuelistFragment.loadMore(null);
 			}
 		}
     	return super.onKeyDown(keyCode, event);
@@ -191,6 +192,10 @@ public class MainActivity extends FragmentActivity {
     	btn_cancel=(Button) popWindow.findViewById(R.id.btn_cancel);
     	btnYuelist = (Button) popWindow.findViewById(R.id.btnYuelist);
     	btnRanks = (Button) popWindow.findViewById(R.id.btnRanks);
+    	if (fragmentIndex==1) {
+			ett_mvSearch.setHint("搜索悦单");
+			
+		}
     	OnKeyListener popListener = new OnKeyListener() {
 			
 			@Override
@@ -210,10 +215,10 @@ public class MainActivity extends FragmentActivity {
 			
 			@Override
 			public void onClick(View arg0) {
+				fragmentIndex = 1;
 				FragmentTransaction ft = fragmentManager.beginTransaction();
 				if (yuelistFragment==null) {
 					yuelistFragment = new YueListFragment();
-//					fragmentTransaction.replace(R.id.content_fl, yuelistFragment, "yf");
 					ft.replace(R.id.content_fl,yuelistFragment, "yf").commit();
 				}else {
 					ft.attach(yuelistFragment);
@@ -245,20 +250,33 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				StringBuilder str = new StringBuilder();
-				str.append("http://so.yinyuetai.com/mv?keyword=");
-				try {
-					str.append(URLEncoder.encode(ett_mvSearch.getText().toString(),"UTF-8"));
-					str.append("&area=");
-					str.append(array1[Preference.getInt("item1")]);
-					str.append("&property=");
-					str.append(array2[Preference.getInt("item2")]);
-					str.append("&sourceType=");
-					str.append(array4[Preference.getInt("item4")]);
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (fragmentIndex==1) {
+					str.append("http://so.yinyuetai.com/new/playlist?keyword=");
+					try {
+						str.append(URLEncoder.encode(ett_mvSearch.getText().toString(),"UTF-8"));
+						str.append("&page=");
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					yuelistFragment.loadMore(str.toString());
 				}
-				mainFragment.changeContent(3, str);
+				if (fragmentIndex==0) {
+					str.append("http://so.yinyuetai.com/mv?keyword=");
+					try {
+						str.append(URLEncoder.encode(ett_mvSearch.getText().toString(),"UTF-8"));
+						str.append("&area=");
+						str.append(array1[Preference.getInt("item1")]);
+						str.append("&property=");
+						str.append(array2[Preference.getInt("item2")]);
+						str.append("&sourceType=");
+						str.append(array4[Preference.getInt("item4")]);
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					mainFragment.changeContent(3, str);
+				}
 				popupWindow.dismiss();
 				
 			}

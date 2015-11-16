@@ -12,7 +12,7 @@
 	        <RadioButton android:id="@+id/rb1" android:text="今日热播" android:textColor="#bfb9b9" android:textSize="18sp" android:layout_marginTop="15dp"/>
 	        <RadioButton android:id="@+id/rb2" android:text="编辑推荐" android:textColor="#bfb9b9" android:textSize="18sp" android:layout_marginTop="15dp"/>
 	        <RadioButton android:id="@+id/rb3" android:text="历史热播" android:textColor="#bfb9b9" android:textSize="18sp" android:layout_marginTop="15dp"/>
-	        <RadioButton android:id="@+id/rb4" android:text="最新发布" android:textColor="#bfb9b9" android:textSize="18sp" android:layout_marginTop="15dp"/>
+	        <RadioButton android:id="@+id/rb4" android:text="最新收藏" android:textColor="#bfb9b9" android:textSize="18sp" android:layout_marginTop="15dp"/>
 	    </RadioGroup>
 	    <GridView android:id="@+id/gv" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="50dp" 
 	        android:layout_marginTop="15dp" android:scrollbars="none" android:numColumns="2"/>

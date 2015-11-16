@@ -35,8 +35,8 @@ public class YueListFragment extends Fragment{
 	private String urlStr;
 	private int page=1;
 	private YueListAdapter adapter;
+	int status;
 	public YueListFragment(){
-		
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,18 +71,24 @@ public class YueListFragment extends Fragment{
 					urlStr = "http://pl.yinyuetai.com/playlist_hotView/all?page=";
 					break;
 				case R.id.rb4:
-					urlStr = "http://pl.yinyuetai.com/playlist_all?page=";
+					urlStr = "http://pl.yinyuetai.com/playlist_newFavorite?page=";
 					break;
 				default:
 					break;
 				}
 				page = 1;
+				status = 0;
 				new LoadList().execute();
 			}
 		});
 		rb1.setChecked(true);
 	}
-	public void loadMore(){
+	public void loadMore(String url){
+		if (url!=null) {
+			urlStr = url;
+			page = 1 ;
+			status = 1;
+		}
     	new LoadList().execute();
     }
 	
@@ -98,7 +104,7 @@ public class YueListFragment extends Fragment{
 		protected List<YueListInfo> doInBackground(Void... arg0) {
 			getRealURL get = new getRealURL();
 			String url = urlStr+page;
-			List<YueListInfo> result = get.parseYueList(url, 0);
+			List<YueListInfo> result = get.parseYueList(url, status);
 			return result;
 		}
 		@Override

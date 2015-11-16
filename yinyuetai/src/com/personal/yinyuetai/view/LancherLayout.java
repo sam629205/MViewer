@@ -251,7 +251,7 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 		if(3*listIndex<infoList.size()){
 			tvs[0].setText(infoList.get(3*listIndex).getTitle());
 			tvs[0].init(((Activity)context).getWindowManager());
-			tvs[0].startScroll();
+//			tvs[0].startScroll();
 			imageLoader.displayImage(infoList.get(3*listIndex).getImg(), imageViews[0], options,new ImageLoadingListener() {
 				
 
@@ -352,8 +352,8 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 		tvs[1].init(((Activity)context).getWindowManager());
 		tvs[2].init(((Activity)context).getWindowManager());
 		
-		tvs[1].startScroll();
-		tvs[2].startScroll();
+//		tvs[1].startScroll();
+//		tvs[2].startScroll();
 
 		
 		this.whiteBorder = ((ImageView) findViewById(R.id.white_boder));
@@ -488,12 +488,15 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 			switch (i) {
 			case 0:
 				((LinearLayout)findViewById(R.id.borderLL1)).setBackgroundResource(R.drawable.border_bg);
+				tvs[0].startScroll();
 				break;
 			case 1:
-				((LinearLayout)findViewById(R.id.borderLL2)).setBackgroundResource(R.drawable.border_bg);			
+				((LinearLayout)findViewById(R.id.borderLL2)).setBackgroundResource(R.drawable.border_bg);
+				tvs[1].startScroll();
 				break;
 			case 2:
 				((LinearLayout)findViewById(R.id.borderLL3)).setBackgroundResource(R.drawable.border_bg);
+				tvs[2].startScroll();
 				break;
 			default:
 				break;
@@ -504,12 +507,15 @@ public class LancherLayout extends LinearLayout implements ShadowCallBack, View.
 			switch (i) {
 			case 0:
 				((LinearLayout)findViewById(R.id.borderLL1)).setBackgroundColor(getResources().getColor(R.color.transparent));
+				tvs[0].stopScroll();
 				break;
 			case 1:
 				((LinearLayout)findViewById(R.id.borderLL2)).setBackgroundColor(getResources().getColor(R.color.transparent));
+				tvs[1].stopScroll();
 				break;
 			case 2:
 				((LinearLayout)findViewById(R.id.borderLL3)).setBackgroundColor(getResources().getColor(R.color.transparent));
+				tvs[2].stopScroll();
 				break;
 			default:
 				break;
