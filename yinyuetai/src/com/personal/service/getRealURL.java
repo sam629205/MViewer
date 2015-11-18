@@ -94,11 +94,11 @@ public List<ArtistInfo> parseWeb(String URL,int status) {
 			break;
 			//MV搜索解析
 		case 2:
-			titleList = new String[24];
-			titleList2 = new String[24];
-			titleList3 = new String[24];
-			imgList = new String[24];
-			videoList = new String[24];
+			titleList = new String[25];
+			titleList2 = new String[25];
+			titleList3 = new String[25];
+			imgList = new String[25];
+			videoList = new String[25];
 			Elements elements5 = doc.getElementsByClass("mv");
 			for (Element ele:elements5) {
 					String img = ele.getElementsByTag("img").get(0).attr("src");
